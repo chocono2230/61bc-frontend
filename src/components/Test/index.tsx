@@ -18,7 +18,7 @@ const Test = () => {
     };
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const res = await API.get('dev', '/hello', myInit);
+      const res = await API.get('api', '/hello', myInit);
       console.log(res);
     } catch (err) {
       console.error(err);

@@ -4,7 +4,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from './aws-exports';
-import awsmobilemanual from './aws-exports-manual-dev';
+import awsmobilemanual from './aws-exports-manual';
 Amplify.configure(awsExports);
 Amplify.configure(awsmobilemanual);
 
