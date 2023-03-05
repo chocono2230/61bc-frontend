@@ -4,7 +4,11 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from './aws-exports';
+import awsmobilemanual from './aws-exports-manual-dev';
 Amplify.configure(awsExports);
+Amplify.configure(awsmobilemanual);
+
+import Test from './components/Test';
 
 const App = () => {
   return (
@@ -12,6 +16,7 @@ const App = () => {
       {({ signOut, user }) => (
         <>
           {user && <h1>Hello {user.username}</h1>}
+          <Test />
           <button onClick={signOut}>Sign out</button>
         </>
       )}

@@ -24,6 +24,9 @@ yarn-error.log*
 
 team-provider-info.json
 
+# 既存 API Gateway の手動インストール
+aws-exports-manual-*.js
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
