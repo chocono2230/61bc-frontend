@@ -21,9 +21,7 @@ export type CreatePostRequest = {
   };
 };
 
-export type CreatePostResponse = {
-  post: Post;
-};
+export type CreatePostResponse = Post;
 
 export type GetAllPostResponse = {
   posts: Post[];
