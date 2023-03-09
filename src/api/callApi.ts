@@ -21,13 +21,14 @@ export const createPost = async (request: CreatePostRequest, authToken: string):
   return null;
 };
 
-export const getAllPost = async (authToken: string): Promise<GetAllPostResponse | null> => {
+export const getAllPost = async (authToken: string, userId?: string): Promise<GetAllPostResponse | null> => {
   const payload = {
     headers: {
       Authorization: authToken,
     },
   };
-  const response = (await API.get('api', '/posts', payload)) as unknown;
+  const path = userId ? `/posts/${userId}` : '/posts';
+  const response = (await API.get('api', path, payload)) as unknown;
   if (isGetAllPostResponse(response)) {
     return response;
   }
