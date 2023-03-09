@@ -25,6 +25,10 @@ export type CreatePostResponse = {
   post: Post;
 };
 
+export type GetAllPostResponse = {
+  posts: Post[];
+};
+
 export const isPost = (post: unknown): post is Post => {
   if (hasProperty(post, 'id', 'userId', 'timestamp', 'gsiSKey', 'content')) {
     if (
@@ -57,6 +61,17 @@ export const isCreatePostRequest = (request: unknown): request is CreatePostRequ
 export const isCreatePostResponse = (response: unknown): response is CreatePostResponse => {
   if (isPost(response)) {
     return true;
+  }
+  return false;
+};
+
+export const isGetAllPostResponse = (response: unknown): response is GetAllPostResponse => {
+  if (hasProperty(response, 'posts')) {
+    if (Array.isArray(response.posts)) {
+      if (response.posts.every((post) => isPost(post))) {
+        return true;
+      }
+    }
   }
   return false;
 };

@@ -1,4 +1,3 @@
-import { Container } from '@mui/material';
 import { API } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
@@ -6,7 +5,7 @@ import { CreatePostRequest } from '../../api/types';
 import { createPost } from '../../api/callApi';
 
 const Test = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   const handleClick = () => {
     void apiCall();
@@ -50,16 +49,21 @@ const Test = () => {
 
   return (
     <>
-      <Container maxWidth='sm'>
-        <button onClick={handleClick}>click me</button>
-        <button
-          onClick={() => {
-            void callCreatePost();
-          }}
-        >
-          PostPostsAPI
-        </button>
-      </Container>
+      <button onClick={handleClick}>click me</button>
+      <button
+        onClick={() => {
+          void callCreatePost();
+        }}
+      >
+        PostPostsAPI
+      </button>
+      <button
+        onClick={() => {
+          void signOut();
+        }}
+      >
+        signOut
+      </button>
     </>
   );
 };
