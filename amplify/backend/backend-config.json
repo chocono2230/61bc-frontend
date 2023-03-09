@@ -1,6 +1,6 @@
 {
   "auth": {
-    "61bcaff7251c": {
+    "61bcd5bcd364": {
       "customAuth": false,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
@@ -8,37 +8,36 @@
       "serviceType": "imported"
     }
   },
-  "hosting": {},
   "parameters": {
-    "AMPLIFY_auth_61bcaff7251c_nativeClientId": {
+    "AMPLIFY_auth_61bcd5bcd364_nativeClientId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "61bcaff7251c"
+          "resourceName": "61bcd5bcd364"
         }
       ]
     },
-    "AMPLIFY_auth_61bcaff7251c_userPoolId": {
+    "AMPLIFY_auth_61bcd5bcd364_userPoolId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "61bcaff7251c"
+          "resourceName": "61bcd5bcd364"
         }
       ]
     },
-    "AMPLIFY_auth_61bcaff7251c_userPoolName": {
+    "AMPLIFY_auth_61bcd5bcd364_userPoolName": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "61bcaff7251c"
+          "resourceName": "61bcd5bcd364"
         }
       ]
     },
-    "AMPLIFY_auth_61bcaff7251c_webClientId": {
+    "AMPLIFY_auth_61bcd5bcd364_webClientId": {
       "usedBy": [
         {
           "category": "auth",
-          "resourceName": "61bcaff7251c"
+          "resourceName": "61bcd5bcd364"
         }
       ]
     }
