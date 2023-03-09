@@ -1,17 +1,19 @@
 import { useForm } from 'react-hook-form';
-import { CreatePostRequest } from '../../api/types';
+import { CreatePostRequest, CreatePostResponse } from '../../api/types';
 import { createPost } from '../../api/callApi';
 import { Box, Button, TextField } from '@mui/material';
 import registerMui from '../../utils/registerMui';
+import { onPromise } from '../../utils/otherUtils';
 
 type FormInputs = CreatePostRequest;
 type Props = {
   userId: string;
   authToken: string;
+  setResponse: React.Dispatch<React.SetStateAction<CreatePostResponse | null>>;
 };
 
 const EditPosts = (props: Props) => {
-  const { userId, authToken } = props;
+  const { userId, authToken, setResponse } = props;
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       userId: userId,
@@ -22,20 +24,20 @@ const EditPosts = (props: Props) => {
   const onSubmit = async (data: FormInputs) => {
     if (!data.content.comment || data.content.comment === '') return;
     try {
+      console.log(data);
       const r = await createPost(data, authToken);
-      return r;
+      setResponse(r);
     } catch (e) {
       console.error(e);
-      return null;
     }
   };
   return (
     <>
-      <form onSubmit={void handleSubmit(onSubmit)}>
+      <form onSubmit={onPromise(handleSubmit(onSubmit))}>
         <Box sx={{ display: 'flex', flexFlow: 'column', maxWidth: '500px' }}>
           <TextField
-            sx={{ mr: 1, ml: 1 }}
-            label='Time'
+            sx={{ mb: 1 }}
+            label='Post'
             type='string'
             InputLabelProps={{ shrink: true }}
             {...registerMui(
