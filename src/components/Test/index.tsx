@@ -2,6 +2,9 @@ import { Container } from '@mui/material';
 import { API } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
+import { CreatePostRequest } from '../../api/types';
+import { createPost } from '../../api/callApi';
+
 const Test = () => {
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -24,10 +27,38 @@ const Test = () => {
       console.error(err);
     }
   };
+
+  const callCreatePost = async () => {
+    const token = user.getSignInUserSession()?.getIdToken().getJwtToken();
+    const attr = user.attributes;
+    if (!attr || !attr.sub) return;
+    if (!token) return;
+    const d = new Date();
+    const request: CreatePostRequest = {
+      userId: attr.sub,
+      content: {
+        comment: 'test : ' + d.toISOString(),
+      },
+    };
+    try {
+      const res = await createPost(request, token);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <Container maxWidth='sm'>
         <button onClick={handleClick}>click me</button>
+        <button
+          onClick={() => {
+            void callCreatePost();
+          }}
+        >
+          PostPostsAPI
+        </button>
       </Container>
     </>
   );
