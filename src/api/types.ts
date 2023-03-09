@@ -55,10 +55,8 @@ export const isCreatePostRequest = (request: unknown): request is CreatePostRequ
 };
 
 export const isCreatePostResponse = (response: unknown): response is CreatePostResponse => {
-  if (hasProperty(response, 'post')) {
-    if (isPost(response.post)) {
-      return true;
-    }
+  if (isPost(response)) {
+    return true;
   }
   return false;
 };
