@@ -14,7 +14,7 @@ type Props = {
 
 const EditPosts = (props: Props) => {
   const { userId, authToken, setResponse } = props;
-  const { register, handleSubmit } = useForm<FormInputs>({
+  const { register, handleSubmit, reset } = useForm<FormInputs>({
     defaultValues: {
       userId: userId,
       content: {},
@@ -26,6 +26,7 @@ const EditPosts = (props: Props) => {
     try {
       const r = await createPost(data, authToken);
       setResponse(r);
+      reset();
     } catch (e) {
       console.error(e);
     }
@@ -35,7 +36,7 @@ const EditPosts = (props: Props) => {
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
         <Box sx={{ display: 'flex', flexFlow: 'column', maxWidth: '500px' }}>
           <TextField
-            sx={{ mb: 1 }}
+            sx={{ mb: 1, mt: 1 }}
             label='Post'
             type='string'
             InputLabelProps={{ shrink: true }}
