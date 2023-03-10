@@ -7,7 +7,7 @@ import { createUser } from './api/callApi';
 import Test from './components/Test';
 import Home from './pages/Home';
 
-const UserContext = createContext<User | null>(null);
+export const UserContext = createContext<User | null>(null);
 
 const Top = () => {
   const [iuser, setIuser] = useState<User | null>(null);
