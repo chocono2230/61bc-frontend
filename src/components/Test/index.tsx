@@ -1,7 +1,7 @@
 import { API } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
-import { CreatePostRequest } from '../../api/types';
+import { CreatePostRequest } from '../../api/types/post';
 import { createPost } from '../../api/callApi';
 
 const Test = () => {

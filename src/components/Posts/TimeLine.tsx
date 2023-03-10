@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemText } from '@mui/material';
-import { Post } from '../../api/types';
+import { Post } from '../../api/types/post';
 
 type Props = {
   posts: Post[];
