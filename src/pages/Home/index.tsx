@@ -31,7 +31,6 @@ const Home = () => {
 
   useEffect(() => {
     if (!response) return;
-    console.log(response);
     setPosts((prev) => [response, ...prev]);
   }, [response]);
 

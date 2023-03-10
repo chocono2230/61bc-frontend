@@ -24,7 +24,6 @@ const EditPosts = (props: Props) => {
   const onSubmit = async (data: FormInputs) => {
     if (!data.content.comment || data.content.comment === '') return;
     try {
-      console.log(data);
       const r = await createPost(data, authToken);
       setResponse(r);
     } catch (e) {
