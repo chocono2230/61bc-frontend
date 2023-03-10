@@ -4,7 +4,7 @@ import {
   GetAllPostResponse,
   isCreatePostResponse,
   isGetAllPostResponse,
-} from './types';
+} from './types/post';
 import { API } from 'aws-amplify';
 
 export const createPost = async (request: CreatePostRequest, authToken: string): Promise<CreatePostResponse | null> => {

@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { CreatePostRequest, CreatePostResponse } from '../../api/types';
+import { CreatePostRequest, CreatePostResponse } from '../../api/types/post';
 import { createPost } from '../../api/callApi';
 import { Box, Button, TextField } from '@mui/material';
 import registerMui from '../../utils/registerMui';

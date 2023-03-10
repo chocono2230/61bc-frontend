@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { getAllPost } from '../../api/callApi';
-import { CreatePostResponse, Post } from '../../api/types';
+import { CreatePostResponse, Post } from '../../api/types/post';
 import TimeLine from '../../components/Posts/TimeLine';
 import EditPosts from '../../components/Posts/EditPosts';
 

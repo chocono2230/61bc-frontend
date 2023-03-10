@@ -1,4 +1,4 @@
-import { hasProperty } from '../utils/typeUtils';
+import { hasProperty } from '../../utils/typeUtils';
 
 export type Post = {
   id: string;
