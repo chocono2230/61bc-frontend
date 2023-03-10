@@ -7,10 +7,10 @@ import { createUser } from './api/callApi';
 import Test from './components/Test';
 import Home from './pages/Home';
 
-const UserContext = createContext('');
+const UserContext = createContext<User | null>(null);
 
 const Top = () => {
-  const [iuser, setIuser] = useState<User | null>();
+  const [iuser, setIuser] = useState<User | null>(null);
   const { user } = useAuthenticator((context) => [context.user]);
   const token = user.getSignInUserSession()?.getIdToken().getJwtToken();
   useEffect(() => {
@@ -34,7 +34,7 @@ const Top = () => {
   if (!user) return <></>;
   return (
     <Container maxWidth='sm'>
-      <UserContext.Provider value={iuser?.id || ''}>
+      <UserContext.Provider value={iuser}>
         <Test />
         <Home />
       </UserContext.Provider>
