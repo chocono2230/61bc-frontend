@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { API } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
-import { CreatePostRequest } from '../../api/types';
+import { CreatePostRequest } from '../../api/types/post';
 import { createPost } from '../../api/callApi';
+import CustomizedSnackbar from '../CustomizedSnackbar';
 
 const Test = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {
     void apiCall();
@@ -47,6 +50,10 @@ const Test = () => {
     }
   };
 
+  const onSnapBar = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <button onClick={handleClick}>click me</button>
@@ -64,6 +71,14 @@ const Test = () => {
       >
         signOut
       </button>
+      <button
+        onClick={() => {
+          onSnapBar();
+        }}
+      >
+        newSnap
+      </button>
+      <CustomizedSnackbar msg='tst' serverity='success' open={open} setOpen={setOpen} />
     </>
   );
 };

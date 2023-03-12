@@ -1,4 +1,4 @@
-import { hasProperty } from '../utils/typeUtils';
+import { hasProperty } from '../../utils/typeUtils';
 
 export type Post = {
   id: string;
@@ -21,8 +21,12 @@ export type CreatePostRequest = {
   };
 };
 
-export type CreatePostResponse = {
-  post: Post;
+export type CreatePostResponse = Post;
+
+export type DeletePostRequest = {
+  id: string;
+  userId: string;
+  identity: string;
 };
 
 export type GetAllPostResponse = {
