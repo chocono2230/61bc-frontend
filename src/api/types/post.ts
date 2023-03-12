@@ -23,6 +23,12 @@ export type CreatePostRequest = {
 
 export type CreatePostResponse = Post;
 
+export type DeletePostRequest = {
+  id: string;
+  userId: string;
+  identity: string;
+};
+
 export type GetAllPostResponse = {
   posts: Post[];
 };
