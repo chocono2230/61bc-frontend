@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
@@ -29,13 +28,11 @@ const CustomizedSnackbar = (props: Props) => {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
-      <Snackbar open={open} autoHideDuration={time !== undefined ? time : 6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={serverity} sx={{ width: '100%' }}>
-          {msg}
-        </Alert>
-      </Snackbar>
-    </Stack>
+    <Snackbar open={open} autoHideDuration={time !== undefined ? time : 6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity={serverity} sx={{ width: '100%' }}>
+        {msg}
+      </Alert>
+    </Snackbar>
   );
 };
 
