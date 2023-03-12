@@ -41,7 +41,14 @@ const Home = () => {
   return (
     <>
       <EditPosts userId={user.id} authToken={token} setResponse={setResponse} />
-      <TimeLine posts={posts} users={usersMap} setUnknownUser={setUnknownUser} />
+      <TimeLine
+        userId={user.id}
+        authToken={token}
+        identity={user.identity}
+        posts={posts}
+        users={usersMap}
+        setUnknownUser={setUnknownUser}
+      />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         serverity={'warning'}
