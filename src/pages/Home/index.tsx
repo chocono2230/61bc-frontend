@@ -16,7 +16,9 @@ const Home = () => {
   const usersMap = useContext(UsersMapContext);
   const [posts, setPosts] = useState<Post[]>([]);
   const [response, setResponse] = useState<CreatePostResponse | null>(null);
-  const [unknownUser, setUnknownUser] = useState(false);
+  const [unknownUser, setUnknownUser] = useState<boolean>(false);
+  const [deletePost, setDeletePost] = useState<boolean>(false);
+  const [deletePostId, setDeletePostId] = useState<string>('');
 
   useEffect(() => {
     void (async () => {
@@ -37,6 +39,12 @@ const Home = () => {
     setPosts((prev) => [response, ...prev]);
   }, [response]);
 
+  useEffect(() => {
+    if (deletePostId === '') return;
+    setPosts((prev) => prev.filter((p) => p.id !== deletePostId));
+    setDeletePost(true);
+  }, [deletePostId]);
+
   if (!token || !user) return <></>;
   return (
     <>
@@ -48,12 +56,20 @@ const Home = () => {
         posts={posts}
         users={usersMap}
         setUnknownUser={setUnknownUser}
+        setDeletePostId={setDeletePostId}
       />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         serverity={'warning'}
         open={unknownUser}
         setOpen={setUnknownUser}
+      />
+      <CustomizedSnackbar
+        msg={'投稿を削除しました'}
+        serverity={'success'}
+        open={deletePost}
+        setOpen={setDeletePost}
+        time={2000}
       />
     </>
   );

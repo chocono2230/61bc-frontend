@@ -12,10 +12,11 @@ type Props = {
   userId: string;
   authToken: string;
   identity: string;
+  setDeletePostId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const ViewPost = (props: Props) => {
-  const { post, userName, userId, authToken, identity } = props;
+  const { post, userName, userId, authToken, identity, setDeletePostId } = props;
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const idDisabled = post.userId !== userId;
 
@@ -28,6 +29,7 @@ const ViewPost = (props: Props) => {
       };
       await deletePost(req, authToken);
       setDialogOpen(false);
+      setDeletePostId(postId);
     } catch (e) {
       console.error(e);
     }

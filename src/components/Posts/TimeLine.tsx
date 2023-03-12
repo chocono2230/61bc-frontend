@@ -12,10 +12,11 @@ type Props = {
   posts: Post[];
   users: Map<string, PublicUser> | null;
   setUnknownUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeletePostId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const TimeLine = (props: Props) => {
-  const { userId, authToken, identity, posts, users, setUnknownUser } = props;
+  const { userId, authToken, identity, posts, users, setUnknownUser, setDeletePostId } = props;
 
   useEffect(() => {
     if (!users) return;
@@ -38,6 +39,7 @@ const TimeLine = (props: Props) => {
             userId={userId}
             authToken={authToken}
             identity={identity}
+            setDeletePostId={setDeletePostId}
           />
         );
       })}
