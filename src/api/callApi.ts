@@ -5,6 +5,7 @@ import {
   isCreatePostResponse,
   isGetAllPostResponse,
 } from './types/post';
+import { GetAllUsersResponse, isGetAllUsersResponse } from './types/user';
 import { API } from 'aws-amplify';
 import { CreateUserRequest, CreateUserResponse, isCreateUserResponse } from './types/user';
 
@@ -45,6 +46,19 @@ export const createUser = async (request: CreateUserRequest, authToken: string):
   };
   const response = (await API.post('api', '/users', payload)) as unknown;
   if (isCreateUserResponse(response)) {
+    return response;
+  }
+  return null;
+};
+
+export const getAllPublicUser = async (authToken: string): Promise<GetAllUsersResponse | null> => {
+  const payload = {
+    headers: {
+      Authorization: authToken,
+    },
+  };
+  const response = (await API.get('api', '/users', payload)) as unknown;
+  if (isGetAllUsersResponse(response)) {
     return response;
   }
   return null;

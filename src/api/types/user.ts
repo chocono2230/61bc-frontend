@@ -20,6 +20,10 @@ export type CreateUserResponse = {
   user: User;
 };
 
+export type GetAllUsersResponse = {
+  users: PublicUser[];
+};
+
 export const isUser = (user: unknown): user is User => {
   if (hasProperty(user, 'id', 'displayName', 'identity')) {
     if (typeof user.id === 'string' && typeof user.displayName === 'string' && typeof user.identity === 'string') {
@@ -51,6 +55,17 @@ export const isCreateUserResponse = (response: unknown): response is CreateUserR
   if (hasProperty(response, 'user')) {
     if (isUser(response.user)) {
       return true;
+    }
+  }
+  return false;
+};
+
+export const isGetAllUsersResponse = (response: unknown): response is GetAllUsersResponse => {
+  if (hasProperty(response, 'users')) {
+    if (Array.isArray(response.users)) {
+      if (response.users.every((user) => isPublicUser(user))) {
+        return true;
+      }
     }
   }
   return false;
