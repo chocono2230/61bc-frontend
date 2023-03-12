@@ -19,6 +19,7 @@ const Home = () => {
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<string>('');
+  const [createPost, setCreatePost] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
@@ -37,6 +38,7 @@ const Home = () => {
   useEffect(() => {
     if (!response) return;
     setPosts((prev) => [response, ...prev]);
+    setCreatePost(true);
   }, [response]);
 
   useEffect(() => {
@@ -69,6 +71,13 @@ const Home = () => {
         serverity={'success'}
         open={deletePost}
         setOpen={setDeletePost}
+        time={2000}
+      />
+      <CustomizedSnackbar
+        msg={'投稿しました'}
+        serverity={'success'}
+        open={createPost}
+        setOpen={setCreatePost}
         time={2000}
       />
     </>
