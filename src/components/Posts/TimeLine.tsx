@@ -1,25 +1,23 @@
 import { useEffect } from 'react';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { List } from '@mui/material';
 
+import ViewPost from './ViewPost';
 import { PublicUser } from '../../api/types/user';
 import { Post } from '../../api/types/post';
 
 type Props = {
+  userId: string;
+  authToken: string;
+  identity: string;
   posts: Post[];
   users: Map<string, PublicUser> | null;
   setUnknownUser: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const viewPost = (post: Post, userName: string) => {
-  return (
-    <ListItem key={post.id}>
-      <ListItemText primary={post.content.comment} secondary={userName} />
-    </ListItem>
-  );
+  setDeletePostId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const TimeLine = (props: Props) => {
-  const { posts, users, setUnknownUser } = props;
+  const { userId, authToken, identity, posts, users, setUnknownUser, setDeletePostId } = props;
+
   useEffect(() => {
     if (!users) return;
     const unknownUsers = posts.filter((post) => !users.get(post.userId));
@@ -33,7 +31,17 @@ const TimeLine = (props: Props) => {
       {posts.map((post) => {
         const user = users?.get(post.userId);
         const userName = user?.displayName || 'Unknown User';
-        return viewPost(post, userName);
+        return (
+          <ViewPost
+            key={post.id}
+            post={post}
+            userName={userName}
+            userId={userId}
+            authToken={authToken}
+            identity={identity}
+            setDeletePostId={setDeletePostId}
+          />
+        );
       })}
     </List>
   );
