@@ -11,8 +11,13 @@ type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
+type UsersMapContextType = {
+  usersMap: Map<string, PublicUser> | null;
+  setUsersMap: React.Dispatch<React.SetStateAction<Map<string, PublicUser> | null>>;
+};
+
 export const UserContext = createContext<UserContextType | null>(null);
-export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
+export const UsersMapContext = createContext<UsersMapContextType | null>(null);
 
 const Top = () => {
   const [iuser, setIuser] = useState<User | null>(null);
@@ -56,7 +61,7 @@ const Top = () => {
   if (!user) return <></>;
   return (
     <UserContext.Provider value={{ user: iuser, setUser: setIuser }}>
-      <UsersMapContext.Provider value={usersMap}>
+      <UsersMapContext.Provider value={{ usersMap, setUsersMap }}>
         <Container maxWidth='sm'>
           <Router />
         </Container>

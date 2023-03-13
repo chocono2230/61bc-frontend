@@ -13,7 +13,7 @@ const Home = () => {
     ?.getIdToken()
     .getJwtToken();
   const userContext = useContext(UserContext);
-  const usersMap = useContext(UsersMapContext);
+  const usersMapContext = useContext(UsersMapContext);
   const [posts, setPosts] = useState<Post[]>([]);
   const [response, setResponse] = useState<CreatePostResponse | null>(null);
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const Home = () => {
     setDeletePost(true);
   }, [deletePostId]);
 
-  if (!token || !userContext || !userContext.user) return <></>;
+  if (!token || !userContext || !userContext.user || !usersMapContext || !usersMapContext.usersMap) return <></>;
   return (
     <>
       <EditPosts userId={userContext.user.id} authToken={token} setResponse={setResponse} />
@@ -56,7 +56,7 @@ const Home = () => {
         authToken={token}
         identity={userContext.user.identity}
         posts={posts}
-        users={usersMap}
+        users={usersMapContext.usersMap}
         setUnknownUser={setUnknownUser}
         setDeletePostId={setDeletePostId}
       />
