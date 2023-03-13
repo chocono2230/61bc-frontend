@@ -1,11 +1,12 @@
 import { useState, useEffect, createContext } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
 import Test from './components/Test';
 import Home from './pages/Home';
+import Header from './components/Header';
 
 export const UserContext = createContext<User | null>(null);
 export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
@@ -54,14 +55,17 @@ const Top = () => {
 
   if (!user) return <></>;
   return (
-    <Container maxWidth='sm'>
-      <UserContext.Provider value={iuser}>
-        <UsersMapContext.Provider value={usersMap}>
-          <Test />
-          <Home />
-        </UsersMapContext.Provider>
-      </UserContext.Provider>
-    </Container>
+    <Box sx={{ margin: "0" }}>
+      <Header />
+      <Container maxWidth='sm'>
+        <UserContext.Provider value={iuser}>
+          <UsersMapContext.Provider value={usersMap}>
+            <Test />
+            <Home />
+          </UsersMapContext.Provider>
+        </UserContext.Provider>
+      </Container>
+    </Box>
   );
 };
 
