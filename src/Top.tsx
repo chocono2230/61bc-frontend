@@ -56,15 +56,15 @@ const Top = () => {
   if (!user) return <></>;
   return (
     <Box sx={{ margin: '0' }}>
-      <Header />
-      <Container maxWidth='sm'>
-        <UserContext.Provider value={iuser}>
-          <UsersMapContext.Provider value={usersMap}>
+      <UserContext.Provider value={iuser}>
+        <UsersMapContext.Provider value={usersMap}>
+          <Header />
+          <Container maxWidth='sm'>
             <Test />
             <Home />
-          </UsersMapContext.Provider>
-        </UserContext.Provider>
-      </Container>
+          </Container>
+        </UsersMapContext.Provider>
+      </UserContext.Provider>
     </Box>
   );
 };
