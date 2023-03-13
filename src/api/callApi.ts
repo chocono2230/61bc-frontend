@@ -6,7 +6,13 @@ import {
   isCreatePostResponse,
   isGetAllPostResponse,
 } from './types/post';
-import { GetAllUsersResponse, isGetAllUsersResponse } from './types/user';
+import {
+  GetAllUsersResponse,
+  isGetAllUsersResponse,
+  PutUserRequest,
+  PutUserResponse,
+  isPutUserResponse,
+} from './types/user';
 import { API } from 'aws-amplify';
 import { CreateUserRequest, CreateUserResponse, isCreateUserResponse } from './types/user';
 
@@ -51,6 +57,16 @@ export const deletePost = async (request: DeletePostRequest, authToken: string):
   const payload = createPayload(authToken, request);
   const path = `/posts/${request.id}`;
   await API.del('api', path, payload);
+};
+
+export const putUser = async (request: PutUserRequest, authToken: string): Promise<PutUserResponse | null> => {
+  const payload = createPayload(authToken, request);
+  const path = `/users/${request.id}`;
+  const response = (await API.put('api', path, payload)) as unknown;
+  if (isPutUserResponse(response)) {
+    return response;
+  }
+  return null;
 };
 
 const createPayload = (authToken: string, body?: unknown) => {
