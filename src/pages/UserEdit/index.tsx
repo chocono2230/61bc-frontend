@@ -1,10 +1,13 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Box, Button, TextField } from '@mui/material';
 
 import registerMui from '../../utils/registerMui';
 import { onPromise } from '../../utils/otherUtils';
+import { putUser } from '../../api/callApi';
+import { PutUserRequest } from '../../api/types/user';
+import CustomizedSnackbar from '../../components/CustomizedSnackbar';
 
 import { UserContext } from '../../Top';
 
@@ -23,11 +26,20 @@ const UserEdit = () => {
       displayName: user?.displayName || '',
     },
   });
+  const [successApi, setSuccessApi] = useState<boolean>(false);
 
-  const onSubmit = (data: FormInputs) => {
-    if (data.displayName === '') return;
+  const onSubmit = async (data: FormInputs) => {
+    if (data.displayName === '' || !user || !token) return;
     try {
-      console.log(data);
+      const req: PutUserRequest = {
+        id: user.id,
+        displayName: data.displayName,
+        identity: user.identity,
+      };
+      const r = await putUser(req, token);
+      if (r) {
+        setSuccessApi(true);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -36,7 +48,7 @@ const UserEdit = () => {
   return (
     <>
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
-        <Box sx={{ display: 'flex', flexFlow: 'column', maxWidth: '500px' }}>
+        <Box sx={{ display: 'flex', flexFlow: 'column' }}>
           <TextField
             sx={{ mb: 1, mt: 1 }}
             label='DisplayName'
@@ -53,6 +65,13 @@ const UserEdit = () => {
           </Button>
         </Box>
       </form>
+      <CustomizedSnackbar
+        open={successApi}
+        setOpen={setSuccessApi}
+        msg='ユーザ表示名を更新しました'
+        serverity='success'
+        time={2000}
+      />
     </>
   );
 };
