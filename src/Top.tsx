@@ -24,33 +24,30 @@ const Top = () => {
       };
       if (!token || request.displayName === '' || request.identity === '') return;
       try {
-        const res = await createUser(request, token);
+        const p1 = createUser(request, token);
+        const p2 = getAllPublicUser(token);
+        const [res, res2] = await Promise.all([p1, p2]);
         if (res) {
           setIuser(res.user);
         }
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, [token, user]);
-
-  useEffect(() => {
-    void (async () => {
-      if (!token) return;
-      try {
-        const res = await getAllPublicUser(token);
-        if (res) {
+        if (res2) {
           const map = new Map<string, PublicUser>();
-          res.users.forEach((u) => {
+          res2.users.forEach((u) => {
             map.set(u.id, u);
           });
+          if (res) {
+            const r = map.get(res.user.id);
+            if (!r) {
+              map.set(res.user.id, res.user);
+            }
+          }
           setUsersMap(map);
         }
       } catch (err) {
         console.error(err);
       }
     })();
-  }, [token]);
+  }, [token, user]);
 
   if (!user) return <></>;
   return (
