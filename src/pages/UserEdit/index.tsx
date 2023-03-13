@@ -20,21 +20,21 @@ const UserEdit = () => {
     .user.getSignInUserSession()
     ?.getIdToken()
     .getJwtToken();
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
-      displayName: user?.displayName || '',
+      displayName: userContext?.user?.displayName || '',
     },
   });
   const [successApi, setSuccessApi] = useState<boolean>(false);
 
   const onSubmit = async (data: FormInputs) => {
-    if (data.displayName === '' || !user || !token) return;
+    if (data.displayName === '' || !userContext || !userContext.user || !token) return;
     try {
       const req: PutUserRequest = {
-        id: user.id,
+        id: userContext.user.id,
         displayName: data.displayName,
-        identity: user.identity,
+        identity: userContext.user.identity,
       };
       const r = await putUser(req, token);
       if (r) {

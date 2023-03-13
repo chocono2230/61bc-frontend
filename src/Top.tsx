@@ -6,7 +6,12 @@ import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
 import Router from './Router';
 
-export const UserContext = createContext<User | null>(null);
+type UserContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+};
+
+export const UserContext = createContext<UserContextType | null>(null);
 export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
 
 const Top = () => {
@@ -50,7 +55,7 @@ const Top = () => {
 
   if (!user) return <></>;
   return (
-    <UserContext.Provider value={iuser}>
+    <UserContext.Provider value={{ user: iuser, setUser: setIuser }}>
       <UsersMapContext.Provider value={usersMap}>
         <Container maxWidth='sm'>
           <Router />

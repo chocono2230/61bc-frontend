@@ -16,7 +16,7 @@ import { UserContext } from '../../Top';
 
 const Hander = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -55,7 +55,7 @@ const Hander = () => {
       onClose={handleMobileMenuClose}
     >
       <Typography variant='h6' noWrap sx={{ m: 1 }}>
-        {user?.displayName}
+        {userContext?.user?.displayName}
       </Typography>
       <MenuItem onClick={signOut}>
         <IconButton size='medium' color='inherit'>
