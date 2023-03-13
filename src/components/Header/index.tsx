@@ -9,14 +9,20 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
 
 const Hander = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
   const user = useContext(UserContext);
+  const navigate = useNavigate();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleAppNameClick = () => {
+    navigate('/');
+  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -62,7 +68,7 @@ const Hander = () => {
       <Toolbar />
       <AppBar>
         <Toolbar>
-          <Typography variant='h6' noWrap component='div'>
+          <Typography variant='h6' noWrap component='div' onClick={handleAppNameClick}>
             Kanreki
           </Typography>
           <Box sx={{ flexGrow: 1 }} />

@@ -6,13 +6,13 @@ import { PublicUser } from '../../api/types/user';
 import { Post } from '../../api/types/post';
 
 type Props = {
-  userId: string;
-  authToken: string;
-  identity: string;
   posts: Post[];
   users: Map<string, PublicUser> | null;
   setUnknownUser: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeletePostId: React.Dispatch<React.SetStateAction<string>>;
+  userId?: string;
+  authToken?: string;
+  identity?: string;
+  setDeletePostId?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const TimeLine = (props: Props) => {

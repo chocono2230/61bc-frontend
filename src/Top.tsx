@@ -4,8 +4,7 @@ import { Container } from '@mui/material';
 
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
-import Home from './pages/Home';
-import Header from './components/Header';
+import Router from './Router';
 
 export const UserContext = createContext<User | null>(null);
 export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
@@ -53,9 +52,8 @@ const Top = () => {
   return (
     <UserContext.Provider value={iuser}>
       <UsersMapContext.Provider value={usersMap}>
-        <Header />
         <Container maxWidth='sm'>
-          <Home />
+          <Router />
         </Container>
       </UsersMapContext.Provider>
     </UserContext.Provider>
