@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { ListItem, ListItemText, IconButton } from '@mui/material';
+import { Box, Typography, ListItem, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
+
 import { Post, DeletePostRequest } from '../../api/types/post';
 import { deletePost } from '../../api/callApi';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import GenericDialog from '../GenericDialog';
 
@@ -13,6 +15,27 @@ type Props = {
   authToken?: string;
   identity?: string;
   setDeletePostId?: React.Dispatch<React.SetStateAction<string>>;
+};
+
+type ViewUserNameProps = {
+  userName: string;
+  userId: string;
+};
+
+const ViewUserName = (props: ViewUserNameProps) => {
+  const navigate = useNavigate();
+  const { userName, userId } = props;
+
+  const handleClick = () => {
+    const path = `/user/${userId}`;
+    navigate(path);
+  };
+
+  return (
+    <Typography onClick={handleClick} variant='caption'>
+      {userName}
+    </Typography>
+  );
 };
 
 const ViewPost = (props: Props) => {
@@ -40,6 +63,7 @@ const ViewPost = (props: Props) => {
 
   return (
     <ListItem
+      sx={{ border: '1px solid #e0e0e0', borderRadius: '4px', padding: '8px' }}
       secondaryAction={
         <IconButton
           edge='end'
@@ -61,7 +85,10 @@ const ViewPost = (props: Props) => {
         doCancel={() => setDialogOpen(false)}
         irreversibleFlag
       />
-      <ListItemText primary={post.content.comment} secondary={userName} />
+      <Box sx={{ width: '100%' }}>
+        <ListItemText primary={post.content.comment} />
+        <ViewUserName userName={userName} userId={post.userId} />
+      </Box>
     </ListItem>
   );
 };
