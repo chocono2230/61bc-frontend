@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
 import User from './pages/User';
-import UserConfig from './pages/UserConfig';
+import UserEdit from './pages/UserEdit';
 import NoMatch from './pages/NotMatch';
 
 const Router = () => {
@@ -13,7 +13,7 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/user/:id' element={<User />} />
-        <Route path='/config' element={<UserConfig />} />
+        <Route path='/config' element={<UserEdit />} />
         <Route path='*' element={<NoMatch />} />
       </Routes>
     </BrowserRouter>

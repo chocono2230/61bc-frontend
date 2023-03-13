@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
@@ -30,6 +31,10 @@ const Hander = () => {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleUserConfigClick = () => {
+    navigate('/config');
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -58,6 +63,14 @@ const Hander = () => {
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
           SignOut
+        </Typography>
+      </MenuItem>
+      <MenuItem onClick={handleUserConfigClick}>
+        <IconButton size='medium' color='inherit'>
+          <EditIcon />
+        </IconButton>
+        <Typography variant='body1' noWrap sx={{ m: 1 }}>
+          UserEdit
         </Typography>
       </MenuItem>
     </Menu>
