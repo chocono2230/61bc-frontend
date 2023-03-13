@@ -13,7 +13,7 @@ const User = () => {
     .user.getSignInUserSession()
     ?.getIdToken()
     .getJwtToken();
-  const usersMap = useContext(UsersMapContext);
+  const usersMapContext = useContext(UsersMapContext);
   const { id } = useParams();
   const [posts, setPosts] = useState<Post[]>([]);
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const User = () => {
 
   return (
     <>
-      <TimeLine posts={posts} users={usersMap} setUnknownUser={setUnknownUser} />
+      <TimeLine posts={posts} users={usersMapContext?.usersMap ?? null} setUnknownUser={setUnknownUser} />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         serverity={'warning'}

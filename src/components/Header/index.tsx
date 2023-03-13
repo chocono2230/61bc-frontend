@@ -9,13 +9,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
 
 const Hander = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -30,6 +31,11 @@ const Hander = () => {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleUserConfigClick = () => {
+    setMobileMoreAnchorEl(null);
+    navigate('/config');
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -50,7 +56,7 @@ const Hander = () => {
       onClose={handleMobileMenuClose}
     >
       <Typography variant='h6' noWrap sx={{ m: 1 }}>
-        {user?.displayName}
+        {userContext?.user?.displayName}
       </Typography>
       <MenuItem onClick={signOut}>
         <IconButton size='medium' color='inherit'>
@@ -58,6 +64,14 @@ const Hander = () => {
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
           SignOut
+        </Typography>
+      </MenuItem>
+      <MenuItem onClick={handleUserConfigClick}>
+        <IconButton size='medium' color='inherit'>
+          <EditIcon />
+        </IconButton>
+        <Typography variant='body1' noWrap sx={{ m: 1 }}>
+          UserEdit
         </Typography>
       </MenuItem>
     </Menu>

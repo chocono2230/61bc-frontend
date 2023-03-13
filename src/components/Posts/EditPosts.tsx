@@ -34,7 +34,7 @@ const EditPosts = (props: Props) => {
   return (
     <>
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
-        <Box sx={{ display: 'flex', flexFlow: 'column', maxWidth: '500px' }}>
+        <Box sx={{ display: 'flex', flexFlow: 'column' }}>
           <TextField
             sx={{ mb: 1, mt: 1 }}
             label='Post'
