@@ -38,6 +38,7 @@ const UserEdit = () => {
       };
       const r = await putUser(req, token);
       if (r) {
+        userContext.setUser(r.user);
         setSuccessApi(true);
       }
     } catch (e) {
