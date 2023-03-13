@@ -4,7 +4,6 @@ import { Box, Container } from '@mui/material';
 
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
-import Test from './components/Test';
 import Home from './pages/Home';
 import Header from './components/Header';
 
@@ -60,7 +59,6 @@ const Top = () => {
         <UsersMapContext.Provider value={usersMap}>
           <Header />
           <Container maxWidth='sm'>
-            <Test />
             <Home />
           </Container>
         </UsersMapContext.Provider>
