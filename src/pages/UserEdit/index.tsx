@@ -9,7 +9,7 @@ import { putUser } from '../../api/callApi';
 import { PutUserRequest } from '../../api/types/user';
 import CustomizedSnackbar from '../../components/CustomizedSnackbar';
 
-import { UserContext } from '../../Top';
+import { UserContext, UsersMapContext } from '../../Top';
 
 type FormInputs = {
   displayName: string;
@@ -21,6 +21,7 @@ const UserEdit = () => {
     ?.getIdToken()
     .getJwtToken();
   const userContext = useContext(UserContext);
+  const usersMapContext = useContext(UsersMapContext);
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       displayName: userContext?.user?.displayName || '',
@@ -39,6 +40,11 @@ const UserEdit = () => {
       const r = await putUser(req, token);
       if (r) {
         userContext.setUser(r.user);
+        usersMapContext?.setUsersMap((prev) => {
+          const newUsersMap = new Map(prev);
+          newUsersMap.set(r.user.id, r.user);
+          return newUsersMap;
+        });
         setSuccessApi(true);
       }
     } catch (e) {
