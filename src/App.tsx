@@ -1,5 +1,6 @@
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
+import CssBaseline from '@mui/material/CssBaseline';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from './aws-exports';
@@ -12,6 +13,7 @@ Amplify.configure(awsmobilemanual);
 const App = () => {
   return (
     <Authenticator loginMechanisms={['username']} hideSignUp={true}>
+      <CssBaseline />
       <Top />
     </Authenticator>
   );

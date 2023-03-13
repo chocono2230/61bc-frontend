@@ -4,8 +4,8 @@ import { Container } from '@mui/material';
 
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
-import Test from './components/Test';
 import Home from './pages/Home';
+import Header from './components/Header';
 
 export const UserContext = createContext<User | null>(null);
 export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
@@ -54,14 +54,14 @@ const Top = () => {
 
   if (!user) return <></>;
   return (
-    <Container maxWidth='sm'>
-      <UserContext.Provider value={iuser}>
-        <UsersMapContext.Provider value={usersMap}>
-          <Test />
+    <UserContext.Provider value={iuser}>
+      <UsersMapContext.Provider value={usersMap}>
+        <Header />
+        <Container maxWidth='sm'>
           <Home />
-        </UsersMapContext.Provider>
-      </UserContext.Provider>
-    </Container>
+        </Container>
+      </UsersMapContext.Provider>
+    </UserContext.Provider>
   );
 };
 
