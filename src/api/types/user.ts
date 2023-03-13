@@ -24,6 +24,16 @@ export type GetAllUsersResponse = {
   users: PublicUser[];
 };
 
+export type PutUserRequest = {
+  id: string;
+  displayName: string;
+  identity: string;
+};
+
+export type PutUserResponse = {
+  user: User;
+};
+
 export const isUser = (user: unknown): user is User => {
   if (hasProperty(user, 'id', 'displayName', 'identity')) {
     if (typeof user.id === 'string' && typeof user.displayName === 'string' && typeof user.identity === 'string') {
@@ -66,6 +76,15 @@ export const isGetAllUsersResponse = (response: unknown): response is GetAllUser
       if (response.users.every((user) => isPublicUser(user))) {
         return true;
       }
+    }
+  }
+  return false;
+};
+
+export const isPutUserResponse = (response: unknown): response is PutUserResponse => {
+  if (hasProperty(response, 'user')) {
+    if (isUser(response.user)) {
+      return true;
     }
   }
   return false;

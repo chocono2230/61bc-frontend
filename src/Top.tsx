@@ -4,11 +4,20 @@ import { Container } from '@mui/material';
 
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
-import Test from './components/Test';
-import Home from './pages/Home';
+import Router from './Router';
 
-export const UserContext = createContext<User | null>(null);
-export const UsersMapContext = createContext<Map<string, PublicUser> | null>(null);
+type UserContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+};
+
+type UsersMapContextType = {
+  usersMap: Map<string, PublicUser> | null;
+  setUsersMap: React.Dispatch<React.SetStateAction<Map<string, PublicUser> | null>>;
+};
+
+export const UserContext = createContext<UserContextType | null>(null);
+export const UsersMapContext = createContext<UsersMapContextType | null>(null);
 
 const Top = () => {
   const [iuser, setIuser] = useState<User | null>(null);
@@ -24,9 +33,24 @@ const Top = () => {
       };
       if (!token || request.displayName === '' || request.identity === '') return;
       try {
-        const res = await createUser(request, token);
+        const p1 = createUser(request, token);
+        const p2 = getAllPublicUser(token);
+        const [res, res2] = await Promise.all([p1, p2]);
         if (res) {
           setIuser(res.user);
+        }
+        if (res2) {
+          const map = new Map<string, PublicUser>();
+          res2.users.forEach((u) => {
+            map.set(u.id, u);
+          });
+          if (res) {
+            const r = map.get(res.user.id);
+            if (!r) {
+              map.set(res.user.id, res.user);
+            }
+          }
+          setUsersMap(map);
         }
       } catch (err) {
         console.error(err);
@@ -34,34 +58,15 @@ const Top = () => {
     })();
   }, [token, user]);
 
-  useEffect(() => {
-    void (async () => {
-      if (!token) return;
-      try {
-        const res = await getAllPublicUser(token);
-        if (res) {
-          const map = new Map<string, PublicUser>();
-          res.users.forEach((u) => {
-            map.set(u.id, u);
-          });
-          setUsersMap(map);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, [token]);
-
   if (!user) return <></>;
   return (
-    <Container maxWidth='sm'>
-      <UserContext.Provider value={iuser}>
-        <UsersMapContext.Provider value={usersMap}>
-          <Test />
-          <Home />
-        </UsersMapContext.Provider>
-      </UserContext.Provider>
-    </Container>
+    <UserContext.Provider value={{ user: iuser, setUser: setIuser }}>
+      <UsersMapContext.Provider value={{ usersMap, setUsersMap }}>
+        <Container maxWidth='sm'>
+          <Router />
+        </Container>
+      </UsersMapContext.Provider>
+    </UserContext.Provider>
   );
 };
 
