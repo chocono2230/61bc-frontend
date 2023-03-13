@@ -9,10 +9,10 @@ import GenericDialog from '../GenericDialog';
 type Props = {
   post: Post;
   userName: string;
-  userId: string;
-  authToken: string;
-  identity: string;
-  setDeletePostId: React.Dispatch<React.SetStateAction<string>>;
+  userId?: string;
+  authToken?: string;
+  identity?: string;
+  setDeletePostId?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const ViewPost = (props: Props) => {
@@ -22,6 +22,7 @@ const ViewPost = (props: Props) => {
 
   const callDeletePost = async (postId: string) => {
     try {
+      if (!userId || !identity || !authToken) return;
       const req: DeletePostRequest = {
         id: postId,
         userId: userId,
@@ -29,7 +30,9 @@ const ViewPost = (props: Props) => {
       };
       await deletePost(req, authToken);
       setDialogOpen(false);
-      setDeletePostId(postId);
+      if (setDeletePostId) {
+        setDeletePostId(postId);
+      }
     } catch (e) {
       console.error(e);
     }
