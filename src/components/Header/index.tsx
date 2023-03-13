@@ -34,6 +34,7 @@ const Hander = () => {
   };
 
   const handleUserConfigClick = () => {
+    setMobileMoreAnchorEl(null);
     navigate('/config');
   };
 
