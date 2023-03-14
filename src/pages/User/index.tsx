@@ -39,13 +39,13 @@ const User = () => {
       <TimeLine posts={posts} users={usersMapContext?.usersMap ?? null} setUnknownUser={setUnknownUser} />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
-        serverity={'warning'}
+        severity={'warning'}
         open={unknownUser}
         setOpen={setUnknownUser}
       />
       <CustomizedSnackbar
         msg={'投稿の取得に失敗しました'}
-        serverity={'error'}
+        severity={'error'}
         open={faildLoading}
         setOpen={setFaildLoading}
       />

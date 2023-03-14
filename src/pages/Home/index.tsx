@@ -62,20 +62,20 @@ const Home = () => {
       />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
-        serverity={'warning'}
+        severity={'warning'}
         open={unknownUser}
         setOpen={setUnknownUser}
       />
       <CustomizedSnackbar
         msg={'投稿を削除しました'}
-        serverity={'success'}
+        severity={'success'}
         open={deletePost}
         setOpen={setDeletePost}
         time={2000}
       />
       <CustomizedSnackbar
         msg={'投稿しました'}
-        serverity={'success'}
+        severity={'success'}
         open={createPost}
         setOpen={setCreatePost}
         time={2000}

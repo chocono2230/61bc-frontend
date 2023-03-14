@@ -76,7 +76,7 @@ const UserEdit = () => {
         open={successApi}
         setOpen={setSuccessApi}
         msg='ユーザ表示名を更新しました'
-        serverity='success'
+        severity='success'
         time={2000}
       />
     </>
