@@ -24,6 +24,10 @@ const Hander = () => {
 
   const handleHomeClick = () => {
     navigate('/');
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleMobileMenuClose = () => {
