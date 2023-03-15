@@ -10,6 +10,7 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import EditIcon from '@mui/icons-material/Edit';
+import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
@@ -21,7 +22,7 @@ const Hander = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleAppNameClick = () => {
+  const handleHomeClick = () => {
     navigate('/');
   };
 
@@ -87,10 +88,13 @@ const Hander = () => {
       <Toolbar />
       <AppBar>
         <Toolbar>
-          <Typography variant='h6' noWrap component='div' onClick={handleAppNameClick}>
+          <Typography variant='h6' noWrap component='div' onClick={handleHomeClick}>
             Kanreki
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+          <IconButton size='large' onClick={handleHomeClick} color='inherit'>
+            <HomeIcon />
+          </IconButton>
           <Box sx={{ display: { md: 'flex' } }}>
             <IconButton
               size='large'
