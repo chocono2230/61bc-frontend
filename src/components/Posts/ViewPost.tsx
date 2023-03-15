@@ -80,7 +80,7 @@ const ViewPost = (props: Props) => {
       <GenericDialog
         msg='本当に削除しますか？'
         isOpen={dialogOpen}
-        okMsg='削除'
+        okMsg='削除する'
         doOk={() => void callDeletePost(post.id)}
         doCancel={() => setDialogOpen(false)}
         irreversibleFlag

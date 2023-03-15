@@ -73,7 +73,7 @@ const Hander = () => {
           <ExitToAppIcon />
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
-          SignOut
+          サインアウト
         </Typography>
       </MenuItem>
       <MenuItem onClick={handleUserConfigClick}>
@@ -81,7 +81,7 @@ const Hander = () => {
           <EditIcon />
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
-          UserEdit
+          ユーザ設定
         </Typography>
       </MenuItem>
     </Menu>
@@ -93,7 +93,7 @@ const Hander = () => {
       <AppBar>
         <Toolbar>
           <Typography variant='h6' noWrap component='div' onClick={handleHomeClick}>
-            Kanreki
+            還暦祝い
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton size='large' onClick={handleHomeClick} color='inherit'>

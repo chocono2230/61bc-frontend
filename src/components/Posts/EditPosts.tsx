@@ -49,7 +49,7 @@ const EditPosts = (props: Props) => {
             )}
           />
           <Button variant='contained' color='primary' type='submit'>
-            Submit
+            投稿する
           </Button>
         </Box>
       </form>
