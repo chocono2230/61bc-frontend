@@ -38,6 +38,11 @@ const Hander = () => {
     navigate('/config');
   };
 
+  const handleExitClick = () => {
+    signOut();
+    navigate('/');
+  }
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -58,7 +63,7 @@ const Hander = () => {
       <Typography variant='h6' noWrap sx={{ m: 1 }}>
         {userContext?.user?.displayName}
       </Typography>
-      <MenuItem onClick={signOut}>
+      <MenuItem onClick={handleExitClick}>
         <IconButton size='medium' color='inherit'>
           <ExitToAppIcon />
         </IconButton>
