@@ -40,6 +40,8 @@ const EditPosts = (props: Props) => {
             label='Post'
             type='string'
             InputLabelProps={{ shrink: true }}
+            multiline
+            maxRows={10}
             {...registerMui(
               register('content.comment', {
                 maxLength: 140,
