@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { Box } from '@mui/material';
 import { getAllPost } from '../../api/callApi';
 import { CreatePostResponse, Post } from '../../api/types/post';
 import TimeLine from '../../components/Posts/TimeLine';
@@ -49,7 +50,7 @@ const Home = () => {
 
   if (!token || !userContext || !userContext.user || !usersMapContext || !usersMapContext.usersMap) return <></>;
   return (
-    <>
+    <Box sx={{mt:2}}>
       <EditPosts userId={userContext.user.id} authToken={token} setResponse={setResponse} />
       <TimeLine
         userId={userContext.user.id}
@@ -62,25 +63,25 @@ const Home = () => {
       />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
-        serverity={'warning'}
+        severity={'warning'}
         open={unknownUser}
         setOpen={setUnknownUser}
       />
       <CustomizedSnackbar
         msg={'投稿を削除しました'}
-        serverity={'success'}
+        severity={'success'}
         open={deletePost}
         setOpen={setDeletePost}
         time={2000}
       />
       <CustomizedSnackbar
         msg={'投稿しました'}
-        serverity={'success'}
+        severity={'success'}
         open={createPost}
         setOpen={setCreatePost}
         time={2000}
       />
-    </>
+    </Box>
   );
 };
 

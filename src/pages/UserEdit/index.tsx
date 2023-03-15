@@ -55,10 +55,10 @@ const UserEdit = () => {
   return (
     <>
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
-        <Box sx={{ display: 'flex', flexFlow: 'column' }}>
+        <Box sx={{ display: 'flex', flexFlow: 'column', mt:2 }}>
           <TextField
             sx={{ mb: 1, mt: 1 }}
-            label='DisplayName'
+            label='ユーザ表示名'
             type='string'
             InputLabelProps={{ shrink: true }}
             {...registerMui(
@@ -68,7 +68,7 @@ const UserEdit = () => {
             )}
           />
           <Button variant='contained' color='primary' type='submit'>
-            Submit
+            変更する
           </Button>
         </Box>
       </form>
@@ -76,7 +76,7 @@ const UserEdit = () => {
         open={successApi}
         setOpen={setSuccessApi}
         msg='ユーザ表示名を更新しました'
-        serverity='success'
+        severity='success'
         time={2000}
       />
     </>

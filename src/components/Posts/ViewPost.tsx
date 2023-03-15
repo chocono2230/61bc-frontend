@@ -80,13 +80,13 @@ const ViewPost = (props: Props) => {
       <GenericDialog
         msg='本当に削除しますか？'
         isOpen={dialogOpen}
-        okMsg='削除'
+        okMsg='削除する'
         doOk={() => void callDeletePost(post.id)}
         doCancel={() => setDialogOpen(false)}
         irreversibleFlag
       />
       <Box sx={{ width: '100%' }}>
-        <ListItemText primary={post.content.comment} />
+        <ListItemText primary={post.content.comment} sx={{whiteSpace: "pre-line"}} />
         <ViewUserName userName={userName} userId={post.userId} />
       </Box>
     </ListItem>

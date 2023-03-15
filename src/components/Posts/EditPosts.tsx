@@ -40,6 +40,8 @@ const EditPosts = (props: Props) => {
             label='Post'
             type='string'
             InputLabelProps={{ shrink: true }}
+            multiline
+            maxRows={10}
             {...registerMui(
               register('content.comment', {
                 maxLength: 140,
@@ -47,7 +49,7 @@ const EditPosts = (props: Props) => {
             )}
           />
           <Button variant='contained' color='primary' type='submit'>
-            Submit
+            投稿する
           </Button>
         </Box>
       </form>

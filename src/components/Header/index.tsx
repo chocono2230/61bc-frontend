@@ -10,6 +10,7 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import EditIcon from '@mui/icons-material/Edit';
+import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
@@ -21,8 +22,12 @@ const Hander = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleAppNameClick = () => {
+  const handleHomeClick = () => {
     navigate('/');
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleMobileMenuClose = () => {
@@ -37,6 +42,11 @@ const Hander = () => {
     setMobileMoreAnchorEl(null);
     navigate('/config');
   };
+
+  const handleExitClick = () => {
+    signOut();
+    navigate('/');
+  }
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -58,12 +68,12 @@ const Hander = () => {
       <Typography variant='h6' noWrap sx={{ m: 1 }}>
         {userContext?.user?.displayName}
       </Typography>
-      <MenuItem onClick={signOut}>
+      <MenuItem onClick={handleExitClick}>
         <IconButton size='medium' color='inherit'>
           <ExitToAppIcon />
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
-          SignOut
+          サインアウト
         </Typography>
       </MenuItem>
       <MenuItem onClick={handleUserConfigClick}>
@@ -71,7 +81,7 @@ const Hander = () => {
           <EditIcon />
         </IconButton>
         <Typography variant='body1' noWrap sx={{ m: 1 }}>
-          UserEdit
+          ユーザ設定
         </Typography>
       </MenuItem>
     </Menu>
@@ -82,10 +92,13 @@ const Hander = () => {
       <Toolbar />
       <AppBar>
         <Toolbar>
-          <Typography variant='h6' noWrap component='div' onClick={handleAppNameClick}>
-            Kanreki
+          <Typography variant='h6' noWrap component='div' onClick={handleHomeClick}>
+            還暦祝い
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+          <IconButton size='large' onClick={handleHomeClick} color='inherit'>
+            <HomeIcon />
+          </IconButton>
           <Box sx={{ display: { md: 'flex' } }}>
             <IconButton
               size='large'
