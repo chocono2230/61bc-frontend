@@ -27,6 +27,7 @@ const User = () => {
   const [faildLoading, setFaildLoading] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<string>('');
+  const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
@@ -37,6 +38,7 @@ const User = () => {
           setPosts(res.posts);
           if (res.eskId) setEskId(res.eskId);
           if (res.eskTs) setEskTs(res.eskTs);
+          if (!res.eskId || !res.eskTs) setAllLoaded(true);
         }
       } catch (err) {
         console.error(err);
@@ -62,6 +64,7 @@ const User = () => {
         else setEskId('');
         if (res.eskTs) setEskTs(res.eskTs);
         else setEskTs(0);
+        if (!res.eskId || !res.eskTs) setAllLoaded(true);
       }
     } catch (err) {
       console.error(err);
@@ -104,6 +107,13 @@ const User = () => {
         severity={'error'}
         open={faildLoading}
         setOpen={setFaildLoading}
+      />
+      <CustomizedSnackbar
+        msg={'全ての投稿を読み込みました'}
+        severity={'info'}
+        open={allLoaded}
+        setOpen={setAllLoaded}
+        time={2000}
       />
     </>
   );

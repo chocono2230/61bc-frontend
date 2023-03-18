@@ -6,7 +6,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { onPromise } from '../../utils/otherUtils';
 import { getAllPost } from '../../api/callApi';
 import { CreatePostResponse, Post } from '../../api/types/post';
-import ImageEdit from '../../components/Image/ImageEdit';
 import TimeLine from '../../components/Posts/TimeLine';
 import EditPosts from '../../components/Posts/EditPosts';
 import { UserContext, UsersMapContext } from '../../Top';
@@ -28,6 +27,7 @@ const Home = () => {
   const [deletePostId, setDeletePostId] = useState<string>('');
   const [createPost, setCreatePost] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
+  const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
@@ -38,6 +38,7 @@ const Home = () => {
           setPosts(res.posts);
           if (res.eskId) setEskId(res.eskId);
           if (res.eskTs) setEskTs(res.eskTs);
+          if (!res.eskId || !res.eskTs) setAllLoaded(true);
         }
       } catch (err) {
         console.error(err);
@@ -67,6 +68,7 @@ const Home = () => {
         else setEskId('');
         if (res.eskTs) setEskTs(res.eskTs);
         else setEskTs(0);
+        if (!res.eskId || !res.eskTs) setAllLoaded(true);
       }
     } catch (err) {
       console.error(err);
@@ -76,7 +78,6 @@ const Home = () => {
   if (!token || !userContext || !userContext.user || !usersMapContext || !usersMapContext.usersMap) return <></>;
   return (
     <Box sx={{ mt: 2 }}>
-      <ImageEdit authToken={token} />
       <EditPosts
         userId={userContext.user.id}
         authToken={token}
@@ -121,6 +122,13 @@ const Home = () => {
         time={2000}
       />
       <CustomizedSnackbar msg={'投稿中です'} severity={'info'} open={start} setOpen={setStart} />
+      <CustomizedSnackbar
+        msg={'全ての投稿を読み込みました'}
+        severity={'info'}
+        open={allLoaded}
+        setOpen={setAllLoaded}
+        time={2000}
+      />
     </Box>
   );
 };
