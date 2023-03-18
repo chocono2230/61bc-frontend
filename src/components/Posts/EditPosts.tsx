@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Box, Button, TextField } from '@mui/material';
 
 import ImageEditForm from '../Image/ImageEditForm';
-import { CreatePostRequest, CreatePostResponse } from '../../api/types/post';
-import { createPost } from '../../api/callApi';
+import { PostImage, CreatePostRequest, CreatePostResponse, isCreatePostResponse } from '../../api/types/post';
+import { createPost, putImage } from '../../api/callApi';
 import registerMui from '../../utils/registerMui';
-import { onPromise } from '../../utils/otherUtils';
+import { onPromise, generateUuid } from '../../utils/otherUtils';
 
 type FormInputs = CreatePostRequest;
 type Props = {
@@ -34,9 +34,34 @@ const EditPosts = (props: Props) => {
   const onSubmit = async (data: FormInputs) => {
     if (!validate(data)) return;
     try {
-      const r = await createPost(data, authToken);
-      setResponse(r);
+      let payload = data;
+      const promiseArray: Promise<unknown>[] = [];
+      if (image) {
+        const cpFlag = false;
+        const u = generateUuid();
+        console.log(u);
+        const img: PostImage = {
+          originId: u,
+          compressedId: cpFlag ? generateUuid() : u,
+        };
+        promiseArray.push(putImage(image, img.originId, authToken));
+        payload = {
+          ...data,
+          content: {
+            ...data.content,
+            image: {
+              ...img,
+            },
+          },
+        };
+      }
+      promiseArray.unshift(createPost(payload, authToken));
+      const [r] = await Promise.all(promiseArray);
+      if (isCreatePostResponse(r)) {
+        setResponse(r);
+      }
       reset();
+      setImage(null);
     } catch (e) {
       console.error(e);
     }

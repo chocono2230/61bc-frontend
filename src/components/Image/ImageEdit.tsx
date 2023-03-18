@@ -16,7 +16,7 @@ const ImageEdit = (props: Props) => {
   const submitImage = async () => {
     try {
       if (!image) return;
-      await putImage(image, authToken);
+      await putImage(image, 'XXX.jpg', authToken);
     } catch (e) {
       console.error(e);
     }

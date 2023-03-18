@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Box, Typography, ListItem, ListItemText, IconButton } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, Typography, ListItem, ListItemText, IconButton, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Image from 'mui-image';
 import { useNavigate } from 'react-router-dom';
 
 import { Post, DeletePostRequest } from '../../api/types/post';
-import { deletePost } from '../../api/callApi';
+import { Base64Image } from '../../api/types/image';
+import { deletePost, getImage } from '../../api/callApi';
 
 import GenericDialog from '../GenericDialog';
 
@@ -41,7 +43,22 @@ const ViewUserName = (props: ViewUserNameProps) => {
 const ViewPost = (props: Props) => {
   const { post, userName, userId, authToken, identity, setDeletePostId } = props;
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [base64Image, setBase64Image] = useState<Base64Image | null>(null);
   const idDisabled = post.userId !== userId;
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        if (!post.content.image || !authToken) return;
+        const res = await getImage(post.content.image.compressedId, authToken);
+        if (res) {
+          setBase64Image(res);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [post, authToken]);
 
   const callDeletePost = async (postId: string) => {
     try {
@@ -86,7 +103,12 @@ const ViewPost = (props: Props) => {
         irreversibleFlag
       />
       <Box sx={{ width: '100%' }}>
-        <ListItemText primary={post.content.comment} sx={{whiteSpace: "pre-line"}} />
+        <ListItemText primary={post.content.comment} sx={{ whiteSpace: 'pre-line' }} />
+        {base64Image && (
+          <Paper sx={{ width: '100%' }}>
+            <Image src={base64Image.data} />
+          </Paper>
+        )}
         <ViewUserName userName={userName} userId={post.userId} />
       </Box>
     </ListItem>

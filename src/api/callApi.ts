@@ -70,7 +70,7 @@ export const putUser = async (request: PutUserRequest, authToken: string): Promi
   return null;
 };
 
-export const putImage = async (file: File, authToken: string): Promise<void> => {
+export const putImage = async (file: File, id: string, authToken: string): Promise<void> => {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onload = async () => {
@@ -79,7 +79,7 @@ export const putImage = async (file: File, authToken: string): Promise<void> => 
         const p: Base64Image = { data };
         const payload = createPayload(authToken, p);
         console.log(payload);
-        await API.put('api', `/images/${file.name}`, payload);
+        await API.put('api', `/images/${id}`, payload);
         resolve();
       } catch (e) {
         console.error(e);
