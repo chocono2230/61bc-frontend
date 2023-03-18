@@ -19,7 +19,6 @@ const ImageEditForm = (props: Props) => {
     if (!e.target.files) return;
     const img: File = e.target.files[0];
     setImage(img);
-    console.log(img);
   };
 
   const showImage = () => {
@@ -69,7 +68,7 @@ const ImageEditForm = (props: Props) => {
         />
         {showImage()}
       </Box>
-      {image && <Image src={URL.createObjectURL(image)} fit='contain' height={'30vh'} />}
+      {image && <Image src={URL.createObjectURL(image)} fit='contain' height={'30vh'} duration={100} />}
     </>
   );
 };

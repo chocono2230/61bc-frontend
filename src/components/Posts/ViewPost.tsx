@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Box, ListItem, ListItemText } from '@mui/material';
+import { Box, ListItem, ListItemText, Paper } from '@mui/material';
 import Image from 'mui-image';
 
 import { Base64ImageContext, Base64ImageDispatchContext } from '../../context/image';
@@ -69,26 +69,28 @@ const ViewPost = (props: Props) => {
   };
 
   return (
-    <ListItem sx={{ border: '1px solid #e0e0e0', borderRadius: '4px', padding: '8px' }}>
-      <GenericDialog
-        msg='本当に削除しますか？'
-        isOpen={dialogOpen}
-        okMsg='削除する'
-        doOk={() => void callDeletePost(post.id)}
-        doCancel={() => setDialogOpen(false)}
-        irreversibleFlag
-      />
-      <Box sx={{ width: '100%' }}>
-        <ListItemText primary={post.content.comment} sx={{ whiteSpace: 'pre-line' }} />
-        {base64Image && <Image src={base64Image.data} duration={1000} />}
-        <ViewSub
-          userName={userName}
-          userId={post.userId}
-          idDisabled={idDisabled}
-          timestamp={post.timestamp}
-          setDialogOpen={setDialogOpen}
+    <ListItem sx={{ padding: '8px' }}>
+      <Paper elevation={3} sx={{ width: '100%' }}>
+        <GenericDialog
+          msg='本当に削除しますか？'
+          isOpen={dialogOpen}
+          okMsg='削除する'
+          doOk={() => void callDeletePost(post.id)}
+          doCancel={() => setDialogOpen(false)}
+          irreversibleFlag
         />
-      </Box>
+        <Box sx={{ width: '100%' }}>
+          <ListItemText primary={post.content.comment} sx={{ m: 3, whiteSpace: 'pre-line' }} />
+          {base64Image && <Image src={base64Image.data} duration={1000} />}
+          <ViewSub
+            userName={userName}
+            userId={post.userId}
+            idDisabled={idDisabled}
+            timestamp={post.timestamp}
+            setDialogOpen={setDialogOpen}
+          />
+        </Box>
+      </Paper>
     </ListItem>
   );
 };
