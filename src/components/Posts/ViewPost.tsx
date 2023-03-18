@@ -117,7 +117,7 @@ const ViewPost = (props: Props) => {
       />
       <Box sx={{ width: '100%' }}>
         <ListItemText primary={post.content.comment} sx={{ whiteSpace: 'pre-line' }} />
-        {base64Image && <Image src={base64Image.data} />}
+        {base64Image && <Image src={base64Image.data} duration={1000} />}
         <ViewUserName userName={userName} userId={post.userId} />
       </Box>
     </ListItem>
