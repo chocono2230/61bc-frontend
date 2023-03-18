@@ -74,8 +74,7 @@ export const putImage = async (file: File, authToken: string): Promise<void> => 
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onload = async () => {
-      const base64 = reader.result as string;
-      const data = base64.split(',')[1];
+      const data = reader.result as string;
       try {
         const p: Base64Image = { data };
         const payload = createPayload(authToken, p);
