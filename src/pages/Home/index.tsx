@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
+import { onPromise } from '../../utils/otherUtils';
 import { getAllPost } from '../../api/callApi';
 import { CreatePostResponse, Post } from '../../api/types/post';
-import ImageEdit from '../../components/Image/ImageEdit';
 import TimeLine from '../../components/Posts/TimeLine';
 import EditPosts from '../../components/Posts/EditPosts';
 import { UserContext, UsersMapContext } from '../../Top';
@@ -18,19 +20,25 @@ const Home = () => {
   const usersMapContext = useContext(UsersMapContext);
   const [posts, setPosts] = useState<Post[]>([]);
   const [response, setResponse] = useState<CreatePostResponse | null>(null);
+  const [eskId, setEskId] = useState<string>('');
+  const [eskTs, setEskTs] = useState<number>(0);
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<string>('');
   const [createPost, setCreatePost] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
+  const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
       try {
         if (!token) return;
-        const res = await getAllPost(token);
+        const res = await getAllPost(token, '', '', 0);
         if (res) {
           setPosts(res.posts);
+          if (res.eskId) setEskId(res.eskId);
+          if (res.eskTs) setEskTs(res.eskTs);
+          if (!res.eskId || !res.eskTs) setAllLoaded(true);
         }
       } catch (err) {
         console.error(err);
@@ -50,10 +58,26 @@ const Home = () => {
     setDeletePost(true);
   }, [deletePostId]);
 
+  const addPosts = async () => {
+    try {
+      if (!token) return;
+      const res = await getAllPost(token, '', eskId, eskTs);
+      if (res) {
+        setPosts((prev) => [...prev, ...res.posts]);
+        if (res.eskId) setEskId(res.eskId);
+        else setEskId('');
+        if (res.eskTs) setEskTs(res.eskTs);
+        else setEskTs(0);
+        if (!res.eskId || !res.eskTs) setAllLoaded(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (!token || !userContext || !userContext.user || !usersMapContext || !usersMapContext.usersMap) return <></>;
   return (
     <Box sx={{ mt: 2 }}>
-      <ImageEdit authToken={token} />
       <EditPosts
         userId={userContext.user.id}
         authToken={token}
@@ -70,6 +94,13 @@ const Home = () => {
         setUnknownUser={setUnknownUser}
         setDeletePostId={setDeletePostId}
       />
+      {eskId !== '' && (
+        <Box sx={{ textAlign: 'center', m: 2 }}>
+          <IconButton aria-label='add' color='primary' onClick={onPromise(addPosts)}>
+            <AddCircleOutlineIcon sx={{ fontSize: 40 }} />
+          </IconButton>
+        </Box>
+      )}
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         severity={'warning'}
@@ -91,6 +122,13 @@ const Home = () => {
         time={2000}
       />
       <CustomizedSnackbar msg={'投稿中です'} severity={'info'} open={start} setOpen={setStart} />
+      <CustomizedSnackbar
+        msg={'全ての投稿を読み込みました'}
+        severity={'info'}
+        open={allLoaded}
+        setOpen={setAllLoaded}
+        time={2000}
+      />
     </Box>
   );
 };

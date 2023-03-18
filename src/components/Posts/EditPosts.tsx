@@ -86,8 +86,8 @@ const EditPosts = (props: Props) => {
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
         <Box sx={{ display: 'flex', flexFlow: 'column' }}>
           <TextField
-            sx={{ mt: 1 }}
-            label='Post'
+            sx={{ mt: 2 }}
+            label='投稿'
             type='string'
             InputLabelProps={{ shrink: true }}
             multiline
