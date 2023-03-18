@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, TextField } from '@mui/material';
+import imageCompression from 'browser-image-compression';
 
 import ImageEditForm from '../Image/ImageEditForm';
 import { PostImage, CreatePostRequest, CreatePostResponse, isCreatePostResponse } from '../../api/types/post';
@@ -37,7 +38,13 @@ const EditPosts = (props: Props) => {
       let payload = data;
       const promiseArray: Promise<unknown>[] = [];
       if (image) {
-        const cpFlag = false;
+        const compressOption = {
+          maxSizeMB: 0.05,
+          maxWidthOrHeight: 1080,
+          initialQuality: 0.85,
+        };
+        const compressedImage = await imageCompression(image, compressOption);
+        const cpFlag = true;
         const u = generateUuid();
         console.log(u);
         const img: PostImage = {
@@ -45,6 +52,9 @@ const EditPosts = (props: Props) => {
           compressedId: cpFlag ? generateUuid() : u,
         };
         promiseArray.push(putImage(image, img.originId, authToken));
+        if (cpFlag) {
+          promiseArray.push(putImage(compressedImage, img.compressedId, authToken));
+        }
         payload = {
           ...data,
           content: {
