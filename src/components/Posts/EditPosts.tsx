@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, CircularProgress } from '@mui/material';
 import imageCompression from 'browser-image-compression';
 
 import ImageEditForm from '../Image/ImageEditForm';
@@ -14,10 +14,12 @@ type Props = {
   userId: string;
   authToken: string;
   setResponse: React.Dispatch<React.SetStateAction<CreatePostResponse | null>>;
+  start: boolean;
+  setStart: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const EditPosts = (props: Props) => {
-  const { userId, authToken, setResponse } = props;
+  const { userId, authToken, setResponse, start, setStart } = props;
   const { register, handleSubmit, reset } = useForm<FormInputs>({
     defaultValues: {
       userId: userId,
@@ -28,12 +30,14 @@ const EditPosts = (props: Props) => {
 
   const validate = (data: FormInputs) => {
     if (image && image.type.slice(0, 6) === 'image/') return true;
-    if (!data.content.comment && data.content.comment !== '') return true;
+    if (data.content.comment && data.content.comment !== '') return true;
     return false;
   };
 
   const onSubmit = async (data: FormInputs) => {
+    console.log(validate(data));
     if (!validate(data)) return;
+    setStart(true);
     try {
       let payload = data;
       const promiseArray: Promise<unknown>[] = [];
@@ -72,6 +76,7 @@ const EditPosts = (props: Props) => {
       }
       reset();
       setImage(null);
+      setStart(false);
     } catch (e) {
       console.error(e);
     }
@@ -95,11 +100,16 @@ const EditPosts = (props: Props) => {
             )}
           />
           <ImageEditForm image={image} setImage={setImage} />
-          <Button variant='contained' color='primary' type='submit' sx={{ mt: 2 }}>
+          <Button variant='contained' color='primary' type='submit' disabled={start} sx={{ mt: 2 }}>
             投稿する
           </Button>
         </Box>
       </form>
+      {start && (
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+          <CircularProgress sx={{ mt: 2 }} />
+        </Box>
+      )}
     </Box>
   );
 };

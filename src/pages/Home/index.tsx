@@ -22,6 +22,7 @@ const Home = () => {
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<string>('');
   const [createPost, setCreatePost] = useState<boolean>(false);
+  const [start, setStart] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
@@ -53,7 +54,13 @@ const Home = () => {
   return (
     <Box sx={{ mt: 2 }}>
       <ImageEdit authToken={token} />
-      <EditPosts userId={userContext.user.id} authToken={token} setResponse={setResponse} />
+      <EditPosts
+        userId={userContext.user.id}
+        authToken={token}
+        setResponse={setResponse}
+        start={start}
+        setStart={setStart}
+      />
       <TimeLine
         userId={userContext.user.id}
         authToken={token}
@@ -83,6 +90,7 @@ const Home = () => {
         setOpen={setCreatePost}
         time={2000}
       />
+      <CustomizedSnackbar msg={'投稿中です'} severity={'info'} open={start} setOpen={setStart} />
     </Box>
   );
 };
