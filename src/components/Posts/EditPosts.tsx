@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Box, Button, TextField } from '@mui/material';
+
+import ImageEditForm from '../Image/ImageEditForm';
 import { CreatePostRequest, CreatePostResponse } from '../../api/types/post';
 import { createPost } from '../../api/callApi';
-import { Box, Button, TextField } from '@mui/material';
 import registerMui from '../../utils/registerMui';
 import { onPromise } from '../../utils/otherUtils';
 
@@ -20,9 +23,16 @@ const EditPosts = (props: Props) => {
       content: {},
     },
   });
+  const [image, setImage] = useState<File | null>(null);
+
+  const validate = (data: FormInputs) => {
+    if (image && image.type.slice(0, 6) === 'image/') return true;
+    if (!data.content.comment && data.content.comment !== '') return true;
+    return false;
+  };
 
   const onSubmit = async (data: FormInputs) => {
-    if (!data.content.comment || data.content.comment === '') return;
+    if (!validate(data)) return;
     try {
       const r = await createPost(data, authToken);
       setResponse(r);
@@ -31,12 +41,13 @@ const EditPosts = (props: Props) => {
       console.error(e);
     }
   };
+
   return (
-    <>
+    <Box sx={{ mb: 3 }}>
       <form onSubmit={onPromise(handleSubmit(onSubmit))}>
         <Box sx={{ display: 'flex', flexFlow: 'column' }}>
           <TextField
-            sx={{ mb: 1, mt: 1 }}
+            sx={{ mt: 1 }}
             label='Post'
             type='string'
             InputLabelProps={{ shrink: true }}
@@ -48,12 +59,13 @@ const EditPosts = (props: Props) => {
               })
             )}
           />
-          <Button variant='contained' color='primary' type='submit'>
+          <ImageEditForm image={image} setImage={setImage} />
+          <Button variant='contained' color='primary' type='submit' sx={{ mt: 2 }}>
             投稿する
           </Button>
         </Box>
       </form>
-    </>
+    </Box>
   );
 };
 

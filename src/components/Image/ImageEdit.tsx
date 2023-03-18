@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from 'react';
 
+import { onPromise } from '../../utils/otherUtils';
 import { Base64Image } from '../../api/types/image';
 import { putImage, getImage } from '../../api/callApi';
 
@@ -10,14 +10,8 @@ type Props = {
 
 const ImageEdit = (props: Props) => {
   const { authToken } = props;
-  const [image, setImage] = useState<File>();
+  const [image] = useState<File | null>(null);
   const [b64Image, setB64Image] = useState<Base64Image | null>(null);
-
-  const getImageHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const img: File = e.target.files[0];
-    setImage(img);
-  };
 
   const submitImage = async () => {
     try {
@@ -30,23 +24,23 @@ const ImageEdit = (props: Props) => {
 
   const getImageUrl = async () => {
     try {
-      const r = await getImage('tstss.jpg', authToken);
+      const r = await getImage('tst.JPG', authToken);
       setB64Image(r);
     } catch (e) {
       console.error(e);
     }
   };
-  console.log(b64Image);
+
   return (
     <>
       <form>
-        <label htmlFor='img'>画像</label>
-        <input id='img' type='file' accept='image/*,.png,.jpg,.jpeg,.gif' onChange={getImageHandle} />
-        <input type='button' value='保存' onClick={submitImage} />
+        {/* <MuiFileInput value={image} onChange={getImageHandle} size='small' hideSizeText /> */}
+        <input type='button' value='保存' onClick={onPromise(submitImage)} />
       </form>
-      <button type='button' onClick={getImageUrl}>
+      <button type='button' onClick={onPromise(getImageUrl)}>
         チェック
       </button>
+      {b64Image && <img src={'data:image/jpeg;base64,' + b64Image.data} alt='test' />}
     </>
   );
 };
