@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Box, Typography, ListItem, ListItemText, IconButton, Paper } from '@mui/material';
+import { Box, Typography, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Image from 'mui-image';
 import { useNavigate } from 'react-router-dom';
@@ -117,11 +117,7 @@ const ViewPost = (props: Props) => {
       />
       <Box sx={{ width: '100%' }}>
         <ListItemText primary={post.content.comment} sx={{ whiteSpace: 'pre-line' }} />
-        {base64Image && (
-          <Paper sx={{ width: '100%' }}>
-            <Image src={base64Image.data} />
-          </Paper>
-        )}
+        {base64Image && <Image src={base64Image.data} />}
         <ViewUserName userName={userName} userId={post.userId} />
       </Box>
     </ListItem>

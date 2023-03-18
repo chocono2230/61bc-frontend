@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import Image from 'mui-image';
 
 import { IconButton, Box, Typography } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
@@ -40,19 +41,22 @@ const ImageEditForm = (props: Props) => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <input type='file' accept='image/*' ref={inputRef} onChange={getImageHandle} hidden />
-      <IconButton
-        onClick={() => {
-          if (inputRef.current) {
-            inputRef.current.click();
-          }
-        }}
-      >
-        <ImageIcon fontSize='large' />
-      </IconButton>
-      {showImage()}
-    </Box>
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <input type='file' accept='image/*' ref={inputRef} onChange={getImageHandle} hidden />
+        <IconButton
+          onClick={() => {
+            if (inputRef.current) {
+              inputRef.current.click();
+            }
+          }}
+        >
+          <ImageIcon fontSize='large' />
+        </IconButton>
+        {showImage()}
+      </Box>
+      {image && <Image src={URL.createObjectURL(image)} fit='contain' height={'30vh'} />}
+    </>
   );
 };
 
