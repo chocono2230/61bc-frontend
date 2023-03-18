@@ -3,6 +3,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Box } from '@mui/material';
 import { getAllPost } from '../../api/callApi';
 import { CreatePostResponse, Post } from '../../api/types/post';
+import ImageEdit from '../../components/Image/ImageEdit';
 import TimeLine from '../../components/Posts/TimeLine';
 import EditPosts from '../../components/Posts/EditPosts';
 import { UserContext, UsersMapContext } from '../../Top';
@@ -50,7 +51,8 @@ const Home = () => {
 
   if (!token || !userContext || !userContext.user || !usersMapContext || !usersMapContext.usersMap) return <></>;
   return (
-    <Box sx={{mt:2}}>
+    <Box sx={{ mt: 2 }}>
+      <ImageEdit authToken={token} />
       <EditPosts userId={userContext.user.id} authToken={token} setResponse={setResponse} />
       <TimeLine
         userId={userContext.user.id}
