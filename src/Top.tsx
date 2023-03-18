@@ -5,6 +5,7 @@ import { Container } from '@mui/material';
 import { CreateUserRequest, PublicUser, User } from './api/types/user';
 import { createUser, getAllPublicUser } from './api/callApi';
 import Router from './Router';
+import ImageProvider from './context/image';
 
 type UserContextType = {
   user: User | null;
@@ -60,13 +61,15 @@ const Top = () => {
 
   if (!user) return <></>;
   return (
-    <UserContext.Provider value={{ user: iuser, setUser: setIuser }}>
-      <UsersMapContext.Provider value={{ usersMap, setUsersMap }}>
-        <Container maxWidth='sm'>
-          <Router />
-        </Container>
-      </UsersMapContext.Provider>
-    </UserContext.Provider>
+    <ImageProvider>
+      <UserContext.Provider value={{ user: iuser, setUser: setIuser }}>
+        <UsersMapContext.Provider value={{ usersMap, setUsersMap }}>
+          <Container maxWidth='sm'>
+            <Router />
+          </Container>
+        </UsersMapContext.Provider>
+      </UserContext.Provider>
+    </ImageProvider>
   );
 };
 
