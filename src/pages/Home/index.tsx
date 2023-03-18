@@ -60,7 +60,6 @@ const Home = () => {
   const addPosts = async () => {
     try {
       if (!token) return;
-      console.log(eskId, eskTs);
       const res = await getAllPost(token, '', eskId, eskTs);
       if (res) {
         setPosts((prev) => [...prev, ...res.posts]);

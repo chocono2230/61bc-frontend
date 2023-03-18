@@ -1,7 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { Box, IconButton } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useParams } from 'react-router-dom';
 
+import { onPromise } from '../../utils/otherUtils';
 import { UserContext } from '../../Top';
 import { UsersMapContext } from '../../Top';
 import { getAllPost } from '../../api/callApi';
@@ -18,6 +21,8 @@ const User = () => {
   const userContext = useContext(UserContext);
   const { id } = useParams();
   const [posts, setPosts] = useState<Post[]>([]);
+  const [eskId, setEskId] = useState<string>('');
+  const [eskTs, setEskTs] = useState<number>(0);
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
   const [faildLoading, setFaildLoading] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
@@ -30,6 +35,8 @@ const User = () => {
         const res = await getAllPost(token, id, '', 0);
         if (res) {
           setPosts(res.posts);
+          if (res.eskId) setEskId(res.eskId);
+          if (res.eskTs) setEskTs(res.eskTs);
         }
       } catch (err) {
         console.error(err);
@@ -44,6 +51,23 @@ const User = () => {
     setDeletePost(true);
   }, [deletePostId]);
 
+  const addPosts = async () => {
+    try {
+      if (!token || !id) return;
+      console.log(eskId, eskTs);
+      const res = await getAllPost(token, id, eskId, eskTs);
+      if (res) {
+        setPosts((prev) => [...prev, ...res.posts]);
+        if (res.eskId) setEskId(res.eskId);
+        else setEskId('');
+        if (res.eskTs) setEskTs(res.eskTs);
+        else setEskTs(0);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <TimeLine
@@ -55,6 +79,13 @@ const User = () => {
         identity={userContext?.user?.identity}
         setDeletePostId={setDeletePostId}
       />
+      {eskId !== '' && (
+        <Box sx={{ textAlign: 'center', m: 2 }}>
+          <IconButton aria-label='add' color='primary' onClick={onPromise(addPosts)}>
+            <AddCircleOutlineIcon sx={{ fontSize: 40 }} />
+          </IconButton>
+        </Box>
+      )}
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         severity={'warning'}
