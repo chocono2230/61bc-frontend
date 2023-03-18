@@ -27,6 +27,7 @@ const EditPosts = (props: Props) => {
     },
   });
   const [image, setImage] = useState<File | null>(null);
+  const [original, setOriginal] = useState<boolean>(false);
 
   const validate = (data: FormInputs) => {
     if (image && image.type.slice(0, 6) === 'image/') return true;
@@ -48,16 +49,14 @@ const EditPosts = (props: Props) => {
           initialQuality: 0.85,
         };
         const compressedImage = await imageCompression(image, compressOption);
-        const cpFlag = true;
         const u = generateUuid();
-        console.log(u);
         const img: PostImage = {
-          originId: u,
-          compressedId: cpFlag ? generateUuid() : u,
+          originId: original ? generateUuid() : u,
+          compressedId: u,
         };
-        promiseArray.push(putImage(image, img.originId, authToken));
-        if (cpFlag) {
-          promiseArray.push(putImage(compressedImage, img.compressedId, authToken));
+        promiseArray.push(putImage(compressedImage, img.compressedId, authToken));
+        if (original) {
+          promiseArray.push(putImage(image, img.originId, authToken));
         }
         payload = {
           ...data,
@@ -99,7 +98,7 @@ const EditPosts = (props: Props) => {
               })
             )}
           />
-          <ImageEditForm image={image} setImage={setImage} />
+          <ImageEditForm image={image} setImage={setImage} original={original} setOriginal={setOriginal} />
           <Button variant='contained' color='primary' type='submit' disabled={start} sx={{ mt: 2 }}>
             投稿する
           </Button>

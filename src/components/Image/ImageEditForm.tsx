@@ -1,16 +1,18 @@
 import { useRef } from 'react';
 import Image from 'mui-image';
 
-import { IconButton, Box, Typography } from '@mui/material';
+import { IconButton, Box, Typography, Switch, FormControlLabel } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
 
 type Props = {
   image: File | null;
+  original: boolean;
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  setOriginal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ImageEditForm = (props: Props) => {
-  const { image, setImage } = props;
+  const { image, setImage, original, setOriginal } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getImageHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,7 @@ const ImageEditForm = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <input type='file' accept='image/*' ref={inputRef} onChange={getImageHandle} hidden />
         <IconButton
           onClick={() => {
@@ -53,6 +55,18 @@ const ImageEditForm = (props: Props) => {
         >
           <ImageIcon fontSize='large' />
         </IconButton>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={original}
+              onChange={() => {
+                setOriginal(!original);
+              }}
+            />
+          }
+          label='圧縮前画像も送信する'
+        />
         {showImage()}
       </Box>
       {image && <Image src={URL.createObjectURL(image)} fit='contain' height={'30vh'} />}
