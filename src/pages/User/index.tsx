@@ -25,9 +25,9 @@ const User = () => {
 
   useEffect(() => {
     void (async () => {
-      if (!token) return;
+      if (!token || !id) return;
       try {
-        const res = await getAllPost(token, id);
+        const res = await getAllPost(token, id, '', 0);
         if (res) {
           setPosts(res.posts);
         }
@@ -46,7 +46,15 @@ const User = () => {
 
   return (
     <>
-      <TimeLine posts={posts} users={usersMapContext?.usersMap ?? null} setUnknownUser={setUnknownUser} userId={userContext?.user?.id} authToken={token} identity={userContext?.user?.identity} setDeletePostId={setDeletePostId} />
+      <TimeLine
+        posts={posts}
+        users={usersMapContext?.usersMap ?? null}
+        setUnknownUser={setUnknownUser}
+        userId={userContext?.user?.id}
+        authToken={token}
+        identity={userContext?.user?.identity}
+        setDeletePostId={setDeletePostId}
+      />
       <CustomizedSnackbar
         msg={'リロードしてユーザ情報を更新してください'}
         severity={'warning'}

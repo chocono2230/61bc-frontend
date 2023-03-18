@@ -28,7 +28,7 @@ const Home = () => {
     void (async () => {
       try {
         if (!token) return;
-        const res = await getAllPost(token);
+        const res = await getAllPost(token, '', '', 0);
         if (res) {
           setPosts(res.posts);
         }

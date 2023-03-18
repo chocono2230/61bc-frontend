@@ -38,6 +38,8 @@ export type DeletePostRequest = {
 
 export type GetAllPostResponse = {
   posts: Post[];
+  eskId?: string;
+  eskTs?: number;
 };
 
 export const isPostImage = (image: unknown): image is PostImage => {
@@ -92,6 +94,12 @@ export const isCreatePostResponse = (response: unknown): response is CreatePostR
 };
 
 export const isGetAllPostResponse = (response: unknown): response is GetAllPostResponse => {
+  if (hasProperty(response, 'eskId')) {
+    if (typeof response.eskId !== 'string') return false;
+  }
+  if (hasProperty(response, 'eskTs')) {
+    if (typeof response.eskTs !== 'number') return false;
+  }
   if (hasProperty(response, 'posts')) {
     if (Array.isArray(response.posts)) {
       if (response.posts.every((post) => isPost(post))) {

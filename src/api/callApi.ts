@@ -26,9 +26,26 @@ export const createPost = async (request: CreatePostRequest, authToken: string):
   return null;
 };
 
-export const getAllPost = async (authToken: string, userId?: string): Promise<GetAllPostResponse | null> => {
+export const getAllPost = async (
+  authToken: string,
+  userId: string,
+  eskId: string,
+  eskTs: number
+): Promise<GetAllPostResponse | null> => {
   const payload = createPayload(authToken);
-  const path = userId ? `/posts?userid=${userId}` : '/posts';
+  let path = '/posts';
+  if (eskId !== '' || eskTs !== 0 || userId !== '') {
+    path += '?';
+    if (eskId !== '') {
+      path += `eskId=${eskId}`;
+    }
+    if (eskTs !== 0) {
+      path += `eskTs=${eskTs}`;
+    }
+    if (userId !== '') {
+      path += `userId=${userId}`;
+    }
+  }
   const response = (await API.get('api', path, payload)) as unknown;
   if (isGetAllPostResponse(response)) {
     return response;
