@@ -35,15 +35,24 @@ export const getAllPost = async (
   const payload = createPayload(authToken);
   let path = '/posts';
   if (eskId !== '' || eskTs !== 0 || userId !== '') {
-    path += '?';
+    let flg = false;
     if (eskId !== '') {
+      if (flg) path += '&';
+      else path += '?';
+      flg = true;
       path += `eskId=${eskId}`;
     }
     if (eskTs !== 0) {
-      path += `eskTs=${eskTs}`;
+      if (flg) path += '&';
+      else path += '?';
+      flg = true;
+      path += 'eskTs=' + String(eskTs);
     }
     if (userId !== '') {
-      path += `userId=${userId}`;
+      if (flg) path += '&';
+      else path += '?';
+      flg = true;
+      path += `userid=${userId}`;
     }
   }
   const response = (await API.get('api', path, payload)) as unknown;
