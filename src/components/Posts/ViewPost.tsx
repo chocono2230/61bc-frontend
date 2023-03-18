@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Box, Typography, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Image from 'mui-image';
 import { useNavigate } from 'react-router-dom';
 
+import { Base64ImageContext, Base64ImageDispatchContext } from '../../context/image';
 import { Post, DeletePostRequest } from '../../api/types/post';
-import { deletePost } from '../../api/callApi';
+import { Base64Image } from '../../api/types/image';
+import { deletePost, getImage } from '../../api/callApi';
 
 import GenericDialog from '../GenericDialog';
 
@@ -39,9 +42,36 @@ const ViewUserName = (props: ViewUserNameProps) => {
 };
 
 const ViewPost = (props: Props) => {
+  const base64ImageContext = useContext(Base64ImageContext);
+  const base64ImageDispatchContext = useContext(Base64ImageDispatchContext);
   const { post, userName, userId, authToken, identity, setDeletePostId } = props;
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [base64Image, setBase64Image] = useState<Base64Image | null>(null);
   const idDisabled = post.userId !== userId;
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        if (!post.content.image || !authToken) return;
+        if (base64ImageContext) {
+          const res = base64ImageContext.get(post.content.image.compressedId);
+          if (res) {
+            setBase64Image(res);
+            return;
+          }
+        }
+        const res = await getImage(post.content.image.compressedId, authToken);
+        if (res) {
+          setBase64Image(res);
+          if (base64ImageDispatchContext) {
+            base64ImageDispatchContext(post.content.image.compressedId, res);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [post, authToken, base64ImageContext, base64ImageDispatchContext]);
 
   const callDeletePost = async (postId: string) => {
     try {
@@ -86,7 +116,8 @@ const ViewPost = (props: Props) => {
         irreversibleFlag
       />
       <Box sx={{ width: '100%' }}>
-        <ListItemText primary={post.content.comment} sx={{whiteSpace: "pre-line"}} />
+        <ListItemText primary={post.content.comment} sx={{ whiteSpace: 'pre-line' }} />
+        {base64Image && <Image src={base64Image.data} />}
         <ViewUserName userName={userName} userId={post.userId} />
       </Box>
     </ListItem>
