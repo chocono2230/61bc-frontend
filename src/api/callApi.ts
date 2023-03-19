@@ -5,6 +5,9 @@ import {
   DeletePostRequest,
   isCreatePostResponse,
   isGetAllPostResponse,
+  UpdateReactionRequest,
+  UpdateReactionResponse,
+  isUpdateReactionResponse,
 } from './types/post';
 import {
   GetAllUsersResponse,
@@ -120,6 +123,19 @@ export const getImage = async (id: string, authToken: string): Promise<Base64Ima
   const payload = createPayload(authToken);
   const response = (await API.get('api', `/images/${id}`, payload)) as unknown;
   if (isBase64Image(response)) {
+    return response;
+  }
+  return null;
+};
+
+export const updateLike = async (id: string, authToken: string): Promise<UpdateReactionResponse | null> => {
+  const request: UpdateReactionRequest = {
+    id: id,
+    type: 'like',
+  };
+  const payload = createPayload(authToken, request);
+  const response = (await API.patch('api', `/posts/${request.id}`, payload)) as unknown;
+  if (isUpdateReactionResponse(response)) {
     return response;
   }
   return null;
