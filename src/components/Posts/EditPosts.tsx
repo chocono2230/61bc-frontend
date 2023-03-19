@@ -43,7 +43,7 @@ const EditPosts = (props: Props) => {
       const promiseArray: Promise<unknown>[] = [];
       if (image) {
         const compressOption = {
-          maxSizeMB: 0.05,
+          maxSizeMB: 0.5,
           maxWidthOrHeight: 1080,
           initialQuality: 0.85,
         };
