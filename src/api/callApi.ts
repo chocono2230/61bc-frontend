@@ -107,7 +107,6 @@ export const putImage = async (file: File, id: string, authToken: string): Promi
       try {
         const p: Base64Image = { data };
         const payload = createPayload(authToken, p);
-        console.log(payload);
         await API.put('api', `/images/${id}`, payload);
         resolve();
       } catch (e) {
