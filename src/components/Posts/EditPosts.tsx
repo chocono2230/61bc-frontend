@@ -36,7 +36,6 @@ const EditPosts = (props: Props) => {
   };
 
   const onSubmit = async (data: FormInputs) => {
-    console.log(validate(data));
     if (!validate(data)) return;
     setStart(true);
     try {
