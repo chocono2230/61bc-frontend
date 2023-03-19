@@ -11,6 +11,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
+import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../../Top';
@@ -26,7 +27,7 @@ const Hander = () => {
     navigate('/');
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -46,7 +47,7 @@ const Hander = () => {
   const handleExitClick = () => {
     signOut();
     navigate('/');
-  }
+  };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -99,6 +100,11 @@ const Hander = () => {
           <IconButton size='large' onClick={handleHomeClick} color='inherit'>
             <HomeIcon />
           </IconButton>
+          <a target='_blank' href='http://www.yumehiko.co.jp/'>
+            <IconButton size='large' sx={{ color: '#fff' }}>
+              <LinkIcon />
+            </IconButton>
+          </a>
           <Box sx={{ display: { md: 'flex' } }}>
             <IconButton
               size='large'

@@ -8,7 +8,7 @@ import { onPromise } from '../../utils/otherUtils';
 import { UserContext } from '../../Top';
 import { UsersMapContext } from '../../Top';
 import { getAllPost } from '../../api/callApi';
-import { Post } from '../../api/types/post';
+import { Post, UpdateReactionResponse } from '../../api/types/post';
 import TimeLine from '../../components/Posts/TimeLine';
 import CustomizedSnackbar from '../../components/CustomizedSnackbar';
 
@@ -27,6 +27,7 @@ const User = () => {
   const [faildLoading, setFaildLoading] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<string>('');
+  const [likeResponse, setLikeResponse] = useState<UpdateReactionResponse | null>(null);
   const [allLoaded, setAllLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,10 +54,21 @@ const User = () => {
     setDeletePost(true);
   }, [deletePostId]);
 
+  useEffect(() => {
+    if (!likeResponse) return;
+    setPosts((prev) => {
+      const newPosts = [...prev];
+      const idx = newPosts.findIndex((p) => p.id === likeResponse.post.id);
+      if (idx >= 0) {
+        newPosts[idx] = likeResponse.post;
+      }
+      return newPosts;
+    });
+  }, [likeResponse]);
+
   const addPosts = async () => {
     try {
       if (!token || !id) return;
-      console.log(eskId, eskTs);
       const res = await getAllPost(token, id, eskId, eskTs);
       if (res) {
         setPosts((prev) => [...prev, ...res.posts]);
@@ -81,6 +93,7 @@ const User = () => {
         authToken={token}
         identity={userContext?.user?.identity}
         setDeletePostId={setDeletePostId}
+        setLikeResponse={setLikeResponse}
       />
       {eskId !== '' && (
         <Box sx={{ textAlign: 'center', m: 2 }}>

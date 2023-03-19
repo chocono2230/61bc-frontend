@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import { onPromise } from '../../utils/otherUtils';
 import { getAllPost } from '../../api/callApi';
-import { CreatePostResponse, Post } from '../../api/types/post';
+import { CreatePostResponse, Post, UpdateReactionResponse } from '../../api/types/post';
 import TimeLine from '../../components/Posts/TimeLine';
 import EditPosts from '../../components/Posts/EditPosts';
 import { UserContext, UsersMapContext } from '../../Top';
@@ -20,6 +20,7 @@ const Home = () => {
   const usersMapContext = useContext(UsersMapContext);
   const [posts, setPosts] = useState<Post[]>([]);
   const [response, setResponse] = useState<CreatePostResponse | null>(null);
+  const [likeResponse, setLikeResponse] = useState<UpdateReactionResponse | null>(null);
   const [eskId, setEskId] = useState<string>('');
   const [eskTs, setEskTs] = useState<number>(0);
   const [unknownUser, setUnknownUser] = useState<boolean>(false);
@@ -56,7 +57,19 @@ const Home = () => {
     if (deletePostId === '') return;
     setPosts((prev) => prev.filter((p) => p.id !== deletePostId));
     setDeletePost(true);
-  }, [deletePostId]);
+  }, [deletePostId, posts]);
+
+  useEffect(() => {
+    if (!likeResponse) return;
+    setPosts((prev) => {
+      const newPosts = [...prev];
+      const idx = newPosts.findIndex((p) => p.id === likeResponse.post.id);
+      if (idx >= 0) {
+        newPosts[idx] = likeResponse.post;
+      }
+      return newPosts;
+    });
+  }, [likeResponse]);
 
   const addPosts = async () => {
     try {
@@ -93,6 +106,7 @@ const Home = () => {
         users={usersMapContext.usersMap}
         setUnknownUser={setUnknownUser}
         setDeletePostId={setDeletePostId}
+        setLikeResponse={setLikeResponse}
       />
       {eskId !== '' && (
         <Box sx={{ textAlign: 'center', m: 2 }}>
