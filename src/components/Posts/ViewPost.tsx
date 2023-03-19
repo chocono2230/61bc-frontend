@@ -3,9 +3,9 @@ import { Box, ListItem, ListItemText, Paper } from '@mui/material';
 import Image from 'mui-image';
 
 import { Base64ImageContext, Base64ImageDispatchContext } from '../../context/image';
-import { Post, DeletePostRequest } from '../../api/types/post';
+import { Post, DeletePostRequest, UpdateReactionResponse } from '../../api/types/post';
 import { Base64Image } from '../../api/types/image';
-import { deletePost, getImage } from '../../api/callApi';
+import { deletePost, getImage, updateLike } from '../../api/callApi';
 import ViewSub from './ViewSub';
 import GenericDialog from '../GenericDialog';
 
@@ -16,12 +16,13 @@ type Props = {
   authToken?: string;
   identity?: string;
   setDeletePostId?: React.Dispatch<React.SetStateAction<string>>;
+  setLikeResponse: React.Dispatch<React.SetStateAction<UpdateReactionResponse | null>>;
 };
 
 const ViewPost = (props: Props) => {
   const base64ImageContext = useContext(Base64ImageContext);
   const base64ImageDispatchContext = useContext(Base64ImageDispatchContext);
-  const { post, userName, userId, authToken, identity, setDeletePostId } = props;
+  const { post, userName, userId, authToken, identity, setDeletePostId, setLikeResponse } = props;
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [base64Image, setBase64Image] = useState<Base64Image | null>(null);
   const idDisabled = post.userId !== userId;
@@ -68,6 +69,18 @@ const ViewPost = (props: Props) => {
     }
   };
 
+  const callLike = async () => {
+    try {
+      if (!userId || !identity || !authToken) return;
+      const r = await updateLike(post.id, authToken);
+      if (r) {
+        setLikeResponse(r);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <ListItem sx={{ padding: '8px' }}>
       <Paper elevation={3} sx={{ width: '100%' }}>
@@ -88,6 +101,7 @@ const ViewPost = (props: Props) => {
             idDisabled={idDisabled}
             timestamp={post.timestamp}
             setDialogOpen={setDialogOpen}
+            callLike={callLike}
           />
         </Box>
       </Paper>
