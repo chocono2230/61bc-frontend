@@ -100,6 +100,7 @@ const ViewPost = (props: Props) => {
             userId={post.userId}
             idDisabled={idDisabled}
             timestamp={post.timestamp}
+            likes={post.reactions}
             setDialogOpen={setDialogOpen}
             callLike={callLike}
           />

@@ -14,7 +14,7 @@ type Props = {
 };
 
 const ViewSub = (props: Props) => {
-  const { userName, userId, idDisabled, timestamp, setDialogOpen, callLike } = props;
+  const { userName, userId, idDisabled, timestamp, likes, setDialogOpen, callLike } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -36,7 +36,7 @@ const ViewSub = (props: Props) => {
   return (
     <Box sx={{ display: 'flex', p: 1, alignItems: 'center' }}>
       <Typography onClick={handleClick} variant='body2' sx={{ m: 1 }}>
-        投稿者: {userName}
+        {userName}
       </Typography>
       <Typography variant='body2' sx={{ m: 1 }}>
         {timestamp2date(timestamp)}
@@ -46,8 +46,9 @@ const ViewSub = (props: Props) => {
           void callLike();
         }}
       >
-        <FavoriteIcon />
+        <FavoriteIcon sx={{ color: 'rgb(249, 24, 128)' }} />
       </IconButton>
+      <Typography>{likes ? likes : 0}</Typography>
       <IconButton
         onClick={() => {
           setDialogOpen(true);
