@@ -1,17 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type Props = {
   userName: string;
   userId: string;
   idDisabled: boolean;
   timestamp: number;
+  likes?: number;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  callLike: () => Promise<void>;
 };
 
 const ViewSub = (props: Props) => {
-  const { userName, userId, idDisabled, timestamp, setDialogOpen } = props;
+  const { userName, userId, idDisabled, timestamp, likes, setDialogOpen, callLike } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -33,11 +36,19 @@ const ViewSub = (props: Props) => {
   return (
     <Box sx={{ display: 'flex', p: 1, alignItems: 'center' }}>
       <Typography onClick={handleClick} variant='body2' sx={{ m: 1 }}>
-        投稿者: {userName}
+        {userName}
       </Typography>
       <Typography variant='body2' sx={{ m: 1 }}>
         {timestamp2date(timestamp)}
       </Typography>
+      <IconButton
+        onClick={() => {
+          void callLike();
+        }}
+      >
+        <FavoriteIcon sx={{ color: 'rgb(249, 24, 128)' }} />
+      </IconButton>
+      <Typography>{likes ? likes : 0}</Typography>
       <IconButton
         onClick={() => {
           setDialogOpen(true);

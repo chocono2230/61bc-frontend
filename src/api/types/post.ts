@@ -11,7 +11,7 @@ export type Post = {
     comment?: string;
     image?: PostImage;
   };
-  reactions?: object[];
+  reactions?: number;
 };
 
 export type PostImage = {
@@ -42,6 +42,16 @@ export type GetAllPostResponse = {
   eskTs?: number;
 };
 
+export type UpdateReactionRequest = {
+  id: string;
+  type: 'like';
+  payload?: unknown;
+};
+
+export type UpdateReactionResponse = {
+  post: Post;
+};
+
 export const isPostImage = (image: unknown): image is PostImage => {
   if (hasProperty(image, 'originId', 'compressedId')) {
     if (typeof image.originId === 'string' && typeof image.compressedId === 'string') {
@@ -52,6 +62,9 @@ export const isPostImage = (image: unknown): image is PostImage => {
 };
 
 export const isPost = (post: unknown): post is Post => {
+  if (hasProperty(post, 'reactions')) {
+    if (post.reactions != undefined && typeof post.reactions !== 'number') return false;
+  }
   if (hasProperty(post, 'id', 'userId', 'timestamp', 'gsiSKey', 'content')) {
     if (
       typeof post.id === 'string' &&
@@ -105,6 +118,15 @@ export const isGetAllPostResponse = (response: unknown): response is GetAllPostR
       if (response.posts.every((post) => isPost(post))) {
         return true;
       }
+    }
+  }
+  return false;
+};
+
+export const isUpdateReactionResponse = (response: unknown): response is UpdateReactionResponse => {
+  if (hasProperty(response, 'post')) {
+    if (isPost(response.post)) {
+      return true;
     }
   }
   return false;
